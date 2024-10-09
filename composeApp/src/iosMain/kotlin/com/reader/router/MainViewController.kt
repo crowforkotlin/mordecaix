@@ -6,4 +6,4 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.crow.mordecaix.App
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-fun MainViewController() = ComposeUIViewController { App(calculateWindowSizeClass()) }
+fun MainViewController() = ComposeUIViewController { App() }

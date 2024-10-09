@@ -1,24 +1,19 @@
 package com.crow.mordecaix
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.crow.mordecaix.model.di.networkModule
-import org.koin.core.context.startKoin
+import java.awt.Dimension
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 fun main() = application {
-    startKoin {
-        modules(
-            networkModule
-        )
-    }
+
+    initializeApplication()
     Window(
         onCloseRequest = ::exitApplication,
-        title = "",
+        title = "MordecaiX",
     ) {
-        val windowSize = calculateWindowSizeClass()
-        App(windowSize = windowSize)
+        window.minimumSize = Dimension(256,192)
+        App()
     }
 }
