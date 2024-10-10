@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,15 +27,19 @@ import androidx.window.core.layout.WindowSizeClass
 import com.crow.mordecaix.ui.viewmodel.AppViewModel
 import mordecaix.composeapp.generated.resources.Res
 import mordecaix.composeapp.generated.resources.comic_info
-import mordecaix.composeapp.generated.resources.container
+import mordecaix.composeapp.generated.resources.history
+import mordecaix.composeapp.generated.resources.main
 import mordecaix.composeapp.generated.resources.setting
+import mordecaix.composeapp.generated.resources.source
 import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 enum class MordecaiXScreen(val title: StringResource) {
-    ContainerScreen(title = Res.string.container),
+    MainScreen(title = Res.string.main),
     SettingScreen(title = Res.string.setting),
-    ComicInfoScreen(title = Res.string.comic_info)
+    ComicInfoScreen(title = Res.string.comic_info),
+    SourceScreen(title = Res.string.source),
+    HistoryScreen(title = Res.string.history)
 }
 
 @Composable
@@ -47,14 +50,14 @@ fun MordecaiXApp(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = MordecaiXScreen.valueOf(
-        backStackEntry?.destination?.route ?: MordecaiXScreen.ContainerScreen.name
+        backStackEntry?.destination?.route ?: MordecaiXScreen.MainScreen.name
     )
-    BoxWithConstraints(modifier = Modifier.fillMaxSize().imePadding()) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         NavHost(
             navController = navController,
-            startDestination = MordecaiXScreen.ContainerScreen.name,
+            startDestination = MordecaiXScreen.MainScreen.name,
         ) {
-            composableRoute(route = MordecaiXScreen.ContainerScreen.name) {
+            composableRoute(route = MordecaiXScreen.MainScreen.name) {
                 MainScreen(windowSize = windowSize)
             }
             composableRoute(route = MordecaiXScreen.SettingScreen.name) {

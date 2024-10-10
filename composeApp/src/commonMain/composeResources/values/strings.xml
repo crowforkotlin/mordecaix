@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MordecaiX</string>
-    <string name="container">Container</string>
-    <string name="setting">Setting</string>
-    <string name="comic_info">ComicInfo</string>
+    <string name="main">Main</string>
+    <string name="setting">设置</string>
+    <string name="comic_info">漫画信息</string>
+    <string name="source">图源</string>
+    <string name="history">浏览</string>
 </resources>

@@ -13,7 +13,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "MordecaiX",
     ) {
-        window.minimumSize = Dimension(256,192)
+        window.minimumSize = Dimension(352,320)
         App()
     }
 }
