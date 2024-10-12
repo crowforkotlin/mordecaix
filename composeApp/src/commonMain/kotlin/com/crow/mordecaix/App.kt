@@ -8,6 +8,7 @@ import com.crow.mordecaix.ui.theme.MordecaiXTheme
 @Composable
 fun App() {
     MordecaiXTheme {
+//        Samples("Asdasd")
         MordecaiXApp()
     }
 }

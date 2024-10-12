@@ -3,6 +3,6 @@
     <string name="main">Main</string>
     <string name="setting">设置</string>
     <string name="comic_info">漫画信息</string>
-    <string name="source">图源</string>
+    <string name="source">Title</string>
     <string name="history">浏览</string>
 </resources>

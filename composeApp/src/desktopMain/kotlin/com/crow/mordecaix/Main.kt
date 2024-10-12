@@ -7,7 +7,6 @@ import java.awt.Dimension
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 fun main() = application {
-
     initializeApplication()
     Window(
         onCloseRequest = ::exitApplication,

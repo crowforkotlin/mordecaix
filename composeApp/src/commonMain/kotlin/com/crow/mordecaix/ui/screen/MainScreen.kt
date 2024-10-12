@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRail
-import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -27,18 +26,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
-import kotlinx.collections.immutable.toImmutableList
+import com.crow.mordecaix.ui.component.RippleRoundedFillBox
 import mordecaix.composeapp.generated.resources.Res
 import mordecaix.composeapp.generated.resources.source
 import org.jetbrains.compose.resources.stringResource
-
-val list = (1..200).toImmutableList()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,13 +50,24 @@ fun MainScreen(windowSize: WindowSizeClass) {
             Row {
                 NavigationRail {
                     items.fastForEachIndexed { index, item ->
-                        NavigationRailItem(
+                        RippleRoundedFillBox(
+                            modifierAfter = Modifier.padding(20.dp),
+                            selected = index == barSelectedItem,
+                            isSelectEnable = true,
+                            innerColor = Color.Red.copy(alpha = 0.6f),
+                            outlineColor = Color.Green,
+                            onClick = { barSelectedItem = index }
+
+                        ) {
+                            Icon(imageVector = item, contentDescription = null, tint = Color.Black)
+                        }
+                        /*NavigationRailItem(
                             selected = index == barSelectedItem,
                             onClick = { barSelectedItem = index },
                             icon = {
-                                Icon(imageVector = item, contentDescription = null)
+
                             }
-                        )
+                        )*/
                     }
                 }
                 MainNavHost(state, navController, windowSize)
@@ -110,7 +119,7 @@ fun MainNavHost(
         startDestination = MordecaiXScreen.SourceScreen.name
     ) {
         composableRoute(route = MordecaiXScreen.SourceScreen.name) {
-            SourceScreen(windowSize = windowSize)
+            SourceScreen()
         }
         composableRoute(route = MordecaiXScreen.HistoryScreen.name) {
             HistoryScreen(windowSize = windowSize)

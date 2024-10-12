@@ -7,7 +7,7 @@ val extensionModule = module {
     single {
         listOf(
             SourceModel(
-                mName = "拷贝漫画",
+                mName = "testccccc",
                 mAuthor = "crowforkotlin",
                 mVersion = "1.0.0",
                 mLanguage = "ZH-CN",
@@ -15,7 +15,38 @@ val extensionModule = module {
                 mReaderType = "Comic"
             ),
             SourceModel(
-                mName = "热辣漫画",
+                mName = "testAA",
+                mAuthor = "crowforkotlin",
+                mVersion = "1.0.0",
+                mLanguage = "ZH-CN",
+                mIncludeNsfw = true,
+                mReaderType = "Comic"
+            ),
+            SourceModel(
+                mName = "testccccc",
+                mAuthor = "crowforkotlin",
+                mVersion = "1.0.0",
+                mLanguage = "ZH-CN",
+                mIncludeNsfw = true,
+                mReaderType = "Comic"
+            ),
+            SourceModel(
+                mName = "testAA",
+                mAuthor = "crowforkotlin",
+                mVersion = "1.0.0",
+                mLanguage = "ZH-CN",
+                mIncludeNsfw = true,
+                mReaderType = "Comic"
+            ), SourceModel(
+                mName = "testccccc",
+                mAuthor = "crowforkotlin",
+                mVersion = "1.0.0",
+                mLanguage = "ZH-CN",
+                mIncludeNsfw = true,
+                mReaderType = "Comic"
+            ),
+            SourceModel(
+                mName = "testAA",
                 mAuthor = "crowforkotlin",
                 mVersion = "1.0.0",
                 mLanguage = "ZH-CN",

@@ -26,6 +26,7 @@ val LocalDebounce = compositionLocalOf { 0L }
 inline fun debounced(crossinline onClick: () -> Unit, debounceTime: Long = 1000L): () -> Unit {
     var lastTimeClicked by remember { mutableStateOf(0L) }
     val onClickLambda: () -> Unit = {
+
         val now = Clock.System.now().toEpochMilliseconds()
         if (now - lastTimeClicked > debounceTime) {
             onClick()
