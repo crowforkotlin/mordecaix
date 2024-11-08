@@ -52,11 +52,11 @@ fun SourceScreen() {
                     .shadow(1.dp, RoundedCornerShape(7.5.dp)),
                 outlineWidth = 2f,
                 onClick = {
-                    hazeRadius = if (hazeRadius.value < 2) {
+                    /*hazeRadius = if (hazeRadius.value < 2) {
                         (hazeRadius.value + 0.2).dp
                     } else {
                         0.dp
-                    }
+                    }*/
                 },
             ) {
                 Row(modifier = Modifier.haze(state = hazeState)) {
@@ -82,6 +82,39 @@ fun SourceScreen() {
                             noiseFactor = 0f
                         }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview
+fun RippleBoxExample() {
+    val items = listOf(1,2,3)
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(items.size) {
+            RippleRoundedOutlineBox(
+                modifierBefore = Modifier.padding(10.dp),
+                modifierAfter = Modifier
+                    .fillMaxSize()
+                    .border(1.dp, Color.LightGray.copy(alpha = 0.5f), RoundedCornerShape(7.5.dp))
+                    .shadow(1.dp, RoundedCornerShape(7.5.dp)),
+                outlineWidth = 2f,
+                onClick = { },
+            ) {
+                Row {
+                    Icon(
+                        imageVector = Icons.Rounded.Create,
+                        contentDescription = null,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                    Text(
+                        text = items[it].toString(),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                        modifier = Modifier.padding(10.dp)
+
+                    )
+                }
             }
         }
     }

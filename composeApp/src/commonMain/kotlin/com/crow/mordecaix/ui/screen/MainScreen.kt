@@ -54,8 +54,8 @@ fun MainScreen(windowSize: WindowSizeClass) {
                             modifierAfter = Modifier.padding(20.dp),
                             selected = index == barSelectedItem,
                             isSelectEnable = true,
-                            innerColor = Color.Red.copy(alpha = 0.6f),
-                            outlineColor = Color.Green,
+                            innerColor = Color.Gray.copy(alpha = 0.6f),
+                            outlineColor = Color.Green.copy(alpha = 0.6f),
                             onClick = { barSelectedItem = index }
 
                         ) {

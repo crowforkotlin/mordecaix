@@ -26,7 +26,7 @@ voyager = "1.1.0-beta02"
 kotlinx-collections = "0.3.8"
 # https://github.com/Kotlin/kotlinx-datetime
 kotlinxDatetime = "0.6.0"
-haze = "0.9.0-beta03"
+haze = "1.0.0"
 coil = "3.0.0-rc01"
 
 [libraries]
