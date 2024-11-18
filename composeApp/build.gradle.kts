@@ -101,11 +101,6 @@ kotlin {
             implementation(libs.ktor.client.core)
 
             implementation(libs.kotlinx.datetime)
-//            implementation(libs.voyager.navigator)
-//            implementation(libs.voyager.screenModel)
-//            implementation(libs.voyager.bottomSheetNavigator)
-//            implementation(libs.voyager.transitions)
-//            implementation(libs.voyager.koin)
 
             implementation(libs.haze)
             implementation(libs.haze.materials)
