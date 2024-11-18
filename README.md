@@ -1,8 +1,8 @@
 - **Implementation**
     - **Network**
-        - **Ktor** ![badge][badge-android]![badge][badge-windows]![badge][badge-wasm]
+        - **Ktor** ![badge][badge-android]  ![badge][badge-windows]  ![badge][badge-wasm]
     - **Database Storage**
-        - **AndroidX Room** ![badge][badge-android]![badge][badge-windows]
+        - **AndroidX Room** ![badge][badge-android]  ![badge][badge-windows]
 
 
 [badge-android]: http://img.shields.io/badge/-android-6EDB8D.svg?style=flat
