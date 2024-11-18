@@ -2,4 +2,4 @@
     - Network
       - Ktor
     - Database Storage
-      - AndroidX Room - `Android`
+      - AndroidX Room - `![badge][badge-android]`
