@@ -1,10 +1,11 @@
 // Copyright 2023, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -17,7 +18,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 
 /**
  * Simple pager item which displays an image
@@ -29,6 +32,12 @@ internal fun ImageItem(
 ) {
   Surface(modifier) {
     Box {
+      AsyncImage(
+        model = rememberRandomSampleImageUrl(width = 400),
+        contentScale = ContentScale.Crop,
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+      )
 
       Text(
         text = text,

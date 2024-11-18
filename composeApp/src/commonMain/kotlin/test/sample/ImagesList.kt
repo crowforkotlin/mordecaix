@@ -1,7 +1,7 @@
 // Copyright 2023, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,9 +43,11 @@ fun ImagesList(navigator: Navigator) {
         LargeTopAppBar(
           title = { Text(text = "Images") },
           navigationIcon = {
-            IconButton(onClick = navigator::navigateUp) {
-              @Suppress("DEPRECATION")
-              Icon(Icons.Default.ArrowBack, null)
+            IconButton(
+              onClick = navigator::navigateUp,
+              modifier = Modifier.testTag("back"),
+            ) {
+              Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
             }
           },
           modifier = Modifier.fillMaxWidth(),

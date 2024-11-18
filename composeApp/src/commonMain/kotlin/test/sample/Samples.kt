@@ -1,7 +1,7 @@
 // Copyright 2023, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
@@ -32,6 +32,8 @@ import androidx.compose.ui.platform.testTag
 
 val Samples = listOf(
   Sample("Scaffold") { ScaffoldSample(it) },
+  Sample("Scaffold (with progressive blur)") { ScaffoldSample(it, ScaffoldSampleMode.Progressive) },
+  Sample("Scaffold (with mask)") { ScaffoldSample(it, ScaffoldSampleMode.Mask) },
   Sample("Credit Card") { CreditCardSample(it) },
   Sample("Images List") { ImagesList(it) },
   Sample("List over Image") { ListOverImage(it) },
@@ -61,7 +63,10 @@ fun SamplesTheme(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Samples(appTitle: String) {
+fun Samples(
+  appTitle: String,
+  samples: List<Sample> = Samples,
+) {
   SamplesTheme {
     var currentSample by remember { mutableStateOf<Sample?>(null) }
 
@@ -71,6 +76,7 @@ fun Samples(appTitle: String) {
 
     Crossfade(
       targetState = currentSample,
+      modifier = Modifier,
     ) { sample ->
       if (sample != null) {
         sample.content(navigator)
@@ -98,7 +104,7 @@ fun Samples(appTitle: String) {
             modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
           ) {
-            items(Samples) { sample ->
+            items(samples) { sample ->
               ListItem(
                 headlineContent = { Text(text = sample.title) },
                 modifier = Modifier

@@ -1,7 +1,7 @@
 // Copyright 2023, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
@@ -53,6 +56,14 @@ fun ListOverImage(navigator: Navigator) {
       val hazeState = remember { HazeState() }
 
       Box {
+        AsyncImage(
+          model = rememberRandomSampleImageUrl(width = 800),
+          contentScale = ContentScale.Crop,
+          contentDescription = null,
+          modifier = Modifier
+            .haze(state = hazeState)
+            .fillMaxSize(),
+        )
 
         LazyColumn(
           verticalArrangement = Arrangement.spacedBy(8.dp),

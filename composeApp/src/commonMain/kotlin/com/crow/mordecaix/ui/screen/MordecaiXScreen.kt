@@ -26,20 +26,16 @@ import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import com.crow.mordecaix.ui.viewmodel.AppViewModel
 import mordecaix.composeapp.generated.resources.Res
-import mordecaix.composeapp.generated.resources.comic_info
 import mordecaix.composeapp.generated.resources.history
-import mordecaix.composeapp.generated.resources.main
 import mordecaix.composeapp.generated.resources.setting
 import mordecaix.composeapp.generated.resources.source
 import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 enum class MordecaiXScreen(val title: StringResource) {
-    MainScreen(title = Res.string.main),
-    SettingScreen(title = Res.string.setting),
-    ComicInfoScreen(title = Res.string.comic_info),
+    HistoryScreen(title = Res.string.history),
     SourceScreen(title = Res.string.source),
-    HistoryScreen(title = Res.string.history)
+    SettingScreen(title = Res.string.setting),
 }
 
 @Composable
@@ -50,14 +46,14 @@ fun MordecaiXApp(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = MordecaiXScreen.valueOf(
-        backStackEntry?.destination?.route ?: MordecaiXScreen.MainScreen.name
+        backStackEntry?.destination?.route ?: MordecaiXScreen.HistoryScreen.name
     )
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         NavHost(
             navController = navController,
-            startDestination = MordecaiXScreen.MainScreen.name,
+            startDestination = MordecaiXScreen.HistoryScreen.name,
         ) {
-            composableRoute(route = MordecaiXScreen.MainScreen.name) {
+            composableRoute(route = MordecaiXScreen.HistoryScreen.name) {
                 MainScreen(windowSize = windowSize)
             }
             composableRoute(route = MordecaiXScreen.SettingScreen.name) {

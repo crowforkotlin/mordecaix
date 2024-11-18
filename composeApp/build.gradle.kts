@@ -9,7 +9,13 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 kotlin {
@@ -37,7 +43,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     jvm("desktop")
     
     listOf(
@@ -48,12 +54,14 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts.add("-lsqlite3") // Required when using NativeSQLiteDriver
         }
     }
     
     sourceSets {
         val desktopMain by getting
-
+        val commonMain by getting
+        val wasmJsMain by getting
         wasmJsMain.dependencies {
             implementation(libs.koin.wasm)
         }
@@ -73,6 +81,8 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite)
 
             implementation(libs.jetbrains.kotlinx.coroutines)
             implementation(libs.jetbrains.kotlinx.collections)
@@ -158,4 +168,12 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+dependencies {
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspDesktop", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
 }

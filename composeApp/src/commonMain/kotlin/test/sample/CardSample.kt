@@ -1,7 +1,7 @@
 // Copyright 2023, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animate
@@ -44,9 +44,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 
-@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
 fun CreditCardSample(navigator: Navigator) {
   val hazeState = remember { HazeState() }
@@ -99,7 +97,7 @@ fun CreditCardSample(navigator: Navigator) {
         .clip(RoundedCornerShape(16.dp))
         .hazeChild(state = hazeState) {
           backgroundColor = Color.Blue
-          tints = listOf(HazeTint.Color(Color.White.copy(alpha = 0.1f)))
+          tints = listOf(HazeTint(Color.White.copy(alpha = 0.1f)))
           blurRadius = 8.dp
           noiseFactor = HazeDefaults.noiseFactor
         },

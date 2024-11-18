@@ -1,9 +1,10 @@
 // Copyright 2023, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -35,18 +35,29 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeProgressive
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
 
+enum class ScaffoldSampleMode {
+  Default,
+  Progressive,
+  Mask,
+}
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeMaterialsApi::class)
 @Composable
-fun ScaffoldSample(navigator: Navigator) {
+fun ScaffoldSample(
+  navigator: Navigator,
+  mode: ScaffoldSampleMode = ScaffoldSampleMode.Default,
+) {
   val hazeState = remember { HazeState() }
   val gridState = rememberLazyGridState()
   val showNavigationBar by remember(gridState) {
@@ -58,9 +69,12 @@ fun ScaffoldSample(navigator: Navigator) {
   Scaffold(
     topBar = {
       LargeTopAppBar(
-        title = { Text(text = "Haze Scaffold sample") },
+        title = { },
         navigationIcon = {
-          IconButton(onClick = navigator::navigateUp) {
+          IconButton(
+            onClick = navigator::navigateUp,
+            modifier = Modifier.testTag("back"),
+          ) {
             Icon(Icons.AutoMirrored.Default.ArrowBack, null)
           }
         },
@@ -70,7 +84,20 @@ fun ScaffoldSample(navigator: Navigator) {
         ),
         modifier = Modifier
           .hazeChild(hazeState) {
-            applyStyle(style)
+            this.style = style
+
+            when (mode) {
+              ScaffoldSampleMode.Default -> Unit
+              ScaffoldSampleMode.Progressive -> {
+                progressive = HazeProgressive.verticalGradient(
+                  startIntensity = 1f,
+                  endIntensity = 0f,
+                )
+              }
+              ScaffoldSampleMode.Mask -> {
+                mask = Brush.easedVerticalGradient(EaseIn)
+              }
+            }
           }
           .fillMaxWidth(),
       )

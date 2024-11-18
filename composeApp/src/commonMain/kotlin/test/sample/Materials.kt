@@ -1,7 +1,7 @@
 // Copyright 2024, Christopher Banes and the Haze project contributors
 // SPDX-License-Identifier: Apache-2.0
 
-package dev.chrisbanes.haze.sample
+package test.sample
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.CupertinoMaterials
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
@@ -39,6 +42,14 @@ fun MaterialsSample(@Suppress("UNUSED_PARAMETER") navigator: Navigator) {
   val hazeState = remember { HazeState() }
 
   Box {
+    AsyncImage(
+      model = rememberRandomSampleImageUrl(width = 720, height = 1280),
+      contentScale = ContentScale.Crop,
+      contentDescription = null,
+      modifier = Modifier
+        .haze(state = hazeState)
+        .fillMaxSize(),
+    )
 
     Column(
       verticalArrangement = Arrangement.spacedBy(24.dp),

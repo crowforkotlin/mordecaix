@@ -77,7 +77,7 @@ fun SourceScreen() {
                         .matchParentSize()
                         .hazeChild(state = hazeState) {
                             backgroundColor = color
-                            tints = listOf(HazeTint.Color(Color.White.copy(alpha = 0.1f)))
+                            tints = listOf(HazeTint(Color.White.copy(alpha = 0.1f)))
                             blurRadius = hazeRadius
                             noiseFactor = 0f
                         }
