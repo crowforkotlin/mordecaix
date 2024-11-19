@@ -10,7 +10,7 @@ actual fun getAppDatabase(): AppDatabase { return getDatabaseBuilder(app).build(
 
 internal fun getDatabaseBuilder(ctx: Context): RoomDatabase.Builder<AppDatabase> {
     val appContext = ctx.applicationContext
-    val dbFile = appContext.getDatabasePath("my_room.db")
+    val dbFile = appContext.getDatabasePath(Constans.DatabaseFileName)
     return Room.databaseBuilder<AppDatabase>(
         context = appContext,
         name = dbFile.absolutePath

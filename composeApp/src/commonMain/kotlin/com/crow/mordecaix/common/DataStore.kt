@@ -9,4 +9,3 @@ expect fun createDataStore() : DataStore<Preferences>
 
 fun createDataStore(producePath: () -> String): DataStore<Preferences> = PreferenceDataStoreFactory.createWithPath(produceFile = { producePath().toPath() })
 
-const val dataStoreFileName = "datastore.preferences_pb"

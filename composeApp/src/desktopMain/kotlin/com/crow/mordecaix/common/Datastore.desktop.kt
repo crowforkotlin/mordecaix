@@ -6,6 +6,6 @@ import java.io.File
 
 actual fun createDataStore() : DataStore<Preferences> {
     return createDataStore(
-        producePath = { File("${System.getProperty("user.dir")}/datastore", dataStoreFileName).absolutePath  }
+        producePath = { File("${System.getProperty("user.dir")}/datastore", Constans.DataStoreFileName).absolutePath  }
     )
 }
