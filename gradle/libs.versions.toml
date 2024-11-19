@@ -14,6 +14,8 @@ androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
+androidx-datastore = "1.1.1"
+
 compose-plugin = "1.7.0-rc01"
 junit = "4.13.2"
 kotlin = "2.0.20"
@@ -22,7 +24,7 @@ kotlinpoet = "1.17.0"
 kotlinx-coroutines = "1.9.0"
 buildconfig = "5.3.5"
 kotlinxSerialization = "1.7.3"
-koin = "4.0.0"
+koin = "4.0.1-Beta1"
 ktor = "3.0.0"
 voyager = "1.1.0-beta02"
 androidx-room = "2.7.0-alpha07"
@@ -61,6 +63,9 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", versi
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
 androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "androidx-room" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidx-datastore" }
+androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "androidx-datastore" }
+androidx-datastore-preference = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 
 androidx-sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }
 
