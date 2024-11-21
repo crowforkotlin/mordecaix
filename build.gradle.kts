@@ -1,5 +1,3 @@
-import java.io.FileInputStream
-
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
@@ -11,7 +9,13 @@ plugins {
     alias(libs.plugins.ksp) apply false
 }
 
+project.extra["pluginDataStoreInputDirPath"] = "D:\\fish\\MordecaiX\\composeApp\\datastore"
+project.extra["pluginDataStoreOutputDirPath"] = "${projectDir}\\datastore_temp"
 
+apply(from = "gradle/plugin.datastore.gradle.kts")
+
+
+/*
 
 tasks.register<DefaultTask>("decodePreferencesPb") {
     val protocPath = "protoc"
@@ -41,3 +45,20 @@ tasks.register<DefaultTask>("decodePreferencesPb") {
     }
 }
 
+*/
+
+fun Project.kotlinDependenciesConfig() {
+    dependencies {
+        modules {
+            module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
+                replacedBy("org.jetbrains.kotlin:kotlin-stdlib")
+            }
+            module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
+                replacedBy("org.jetbrains.kotlin:kotlin-stdlib")
+            }
+        }
+    }
+}
+allprojects {
+    kotlinDependenciesConfig()
+}

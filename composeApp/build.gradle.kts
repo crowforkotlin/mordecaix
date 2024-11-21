@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -18,15 +21,71 @@ room {
 
 kotlin {
 
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+    applyHierarchyTemplate(KotlinHierarchyTemplate {
+        withSourceSetTree(
+            KotlinSourceSetTree.main,
+            KotlinSourceSetTree.test,
+        )
+        common {
+            withCompilations { true }
+            group("nonAndroid") {
+                withJvm()
+                withJs()
+                withWasmJs()
+                group("native") {
+                    group("apple") {
+                        group("ios") { withIos() }
+                        group("macos") { withMacos() }
+                        withApple()
+                    }
+                    withNative()
+                }
+            }
+            group("nonJs") {
+                withJvm()
+                withAndroidTarget()
+                group("native") {
+                    group("apple") {
+                        group("ios") { withIos() }
+                        group("macos") { withMacos() }
+                        withApple()
+                    }
+                    withNative()
+                }
+            }
         }
+    })
+
+    androidTarget()
+
+    wasmJs {
+        moduleName = "ComposeApp"
+        browser {
+            val projectDirPath = project.projectDir.path
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+                /*devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    static = (static ?: mutableListOf()).apply {
+                        add(projectDirPath)
+                    }
+                }*/
+            }
+        }
+        binaries.executable()
+    }
+
+    js {
+        moduleName = "ComposeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
+        binaries.executable()
     }
 
     jvm("desktop")
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -38,11 +97,15 @@ kotlin {
             linkerOpts.add("-lsqlite3") // Required when using NativeSQLiteDriver
         }
     }
-    
+
     sourceSets {
         val desktopMain by getting
         val commonMain by getting
+        val nonJsMain by getting
+        val nonAndroidMain by getting
+        val jsMain by getting
 
+        jsMain.dependencies { }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -51,6 +114,8 @@ kotlin {
             implementation(libs.koin.android)
         }
         commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -58,12 +123,6 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.androidx.sqlite)
-            implementation(libs.androidx.datastore)
-            implementation(libs.androidx.datastore.core)
-            implementation(libs.androidx.datastore.preference)
 
             implementation(libs.jetbrains.kotlinx.coroutines)
             implementation(libs.jetbrains.kotlinx.collections)
@@ -88,12 +147,21 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.swing)
         }
-        iosMain.dependencies {
+        nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
+        }
+        nonJsMain.dependencies {
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite)
+            implementation(libs.androidx.datastore)
+            implementation(libs.androidx.datastore.core)
+            implementation(libs.androidx.datastore.preference)
+        }
+        nonAndroidMain.dependencies {
+            implementation(libs.skiko)
         }
     }
 }
@@ -124,8 +192,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
@@ -139,7 +207,17 @@ compose.desktop {
     application {
         mainClass = "com.crow.mordecaix.MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage, TargetFormat.Rpm, TargetFormat.Pkg)
+            appResourcesRootDir = layout.projectDirectory.dir("src/desktopMain/assets")
+            jvmArgs += "-splash:${'$'}APPDIR/resources/splash.png"
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Deb,
+                TargetFormat.Exe,
+                TargetFormat.AppImage,
+                TargetFormat.Rpm,
+                TargetFormat.Pkg
+            )
             packageName = "com.crow.mordecaix"
             packageVersion = "1.0.0"
         }
@@ -148,8 +226,32 @@ compose.desktop {
 
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
+    add("kspAndroid", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
+}
+
+// https://youtrack.jetbrains.com/issue/KT-56025
+afterEvaluate {
+    tasks {
+        val configureJs: Task.() -> Unit = {
+            dependsOn(named("jsDevelopmentExecutableCompileSync"))
+            dependsOn(named("jsProductionExecutableCompileSync"))
+            dependsOn(named("jsTestTestDevelopmentExecutableCompileSync"))
+        }
+        named("jsBrowserProductionWebpack").configure(configureJs)
+    }
+}
+// https://youtrack.jetbrains.com/issue/KT-56025
+afterEvaluate {
+    tasks {
+        val configureWasmJs: Task.() -> Unit = {
+            dependsOn(named("wasmJsDevelopmentExecutableCompileSync"))
+            dependsOn(named("wasmJsProductionExecutableCompileSync"))
+            dependsOn(named("wasmJsTestTestDevelopmentExecutableCompileSync"))
+        }
+        named("wasmJsBrowserProductionWebpack").configure(configureWasmJs)
+    }
 }

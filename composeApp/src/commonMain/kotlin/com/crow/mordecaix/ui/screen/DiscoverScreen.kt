@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -37,8 +36,8 @@ import org.koin.mp.KoinPlatform.getKoin
 
 @OptIn(ExperimentalResourceApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
-fun SourceScreen() {
-    var hazeRadius by remember { mutableStateOf(0.dp) }
+fun DiscoverScreen() {
+    val hazeRadius by remember { mutableStateOf(0.dp) }
     val sources = getKoin().get<List<SourceModel>>()
     val color = MaterialTheme.colorScheme.primary
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -124,6 +123,6 @@ fun RippleBoxExample() {
 @Composable
 fun SourceScreenPreview() {
     MordecaiXTheme {
-        SourceScreen()
+        DiscoverScreen()
     }
 }

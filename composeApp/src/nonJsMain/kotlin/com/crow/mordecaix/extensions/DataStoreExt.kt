@@ -25,7 +25,7 @@ import kotlinx.coroutines.runBlocking
  * @author:crow
  */
 
-val appDataStore by lazy { createDataStore() }
+val applicationDatastore by lazy { createDataStore() }
 
 suspend fun DataStore<Preferences>.getIntData(name: String) =
     data.map { preferences -> preferences[intPreferencesKey(name)] ?: 0 }.first()
@@ -71,30 +71,30 @@ fun <T> DataStore<Preferences>.encode(key: Preferences.Key<T>, value: T) {
 }
 
 suspend fun <T> Preferences.Key<T>.asyncEncode(value: T) {
-    appDataStore.edit { it[this] = value }
+    applicationDatastore.edit { it[this] = value }
 }
 
 suspend fun <T> Preferences.Key<T>.asyncRemove() {
-    appDataStore.edit { it.remove(this) }
+    applicationDatastore.edit { it.remove(this) }
 }
 
 suspend fun <T> Preferences.Key<T>.asyncDecode(): T? {
-    return appDataStore.data.map { it[this] }.firstOrNull()
+    return applicationDatastore.data.map { it[this] }.firstOrNull()
 }
 
 fun <T> Preferences.Key<T>.encode(value: T) {
-    runBlocking { appDataStore.edit { it[this@encode] = value } }
+    runBlocking { applicationDatastore.edit { it[this@encode] = value } }
 }
 
 fun <T> Preferences.Key<T>.decode(): T? {
-    return runBlocking { appDataStore.data.map { it[this@decode] }.firstOrNull() }
+    return runBlocking { applicationDatastore.data.map { it[this@decode] }.firstOrNull() }
 }
 
 fun <T> clear() {
-    runBlocking { appDataStore.edit { it.clear() } }
+    runBlocking { applicationDatastore.edit { it.clear() } }
 }
 
 
 fun <T> Preferences.Key<T>.remove(): Preferences {
-    return runBlocking { appDataStore.edit { it.remove(this@remove) } }
+    return runBlocking { applicationDatastore.edit { it.remove(this@remove) } }
 }

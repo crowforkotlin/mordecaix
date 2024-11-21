@@ -1,3 +1,5 @@
+@file:Suppress("ConstPropertyName")
+
 package com.crow.mordecaix.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
@@ -6,7 +8,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
@@ -21,21 +23,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import com.crow.mordecaix.ui.viewmodel.AppViewModel
-import mordecaix.composeapp.generated.resources.Res
-import mordecaix.composeapp.generated.resources.history
-import mordecaix.composeapp.generated.resources.setting
-import mordecaix.composeapp.generated.resources.source
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-enum class MordecaiXScreen(val title: StringResource) {
-    HistoryScreen(title = Res.string.history),
-    SourceScreen(title = Res.string.source),
-    SettingScreen(title = Res.string.setting),
+data object MordecaiXScreen {
+    const val MainScreen = "MainScreen"
+    const val HistoryScreen = "HistoryScreen"
+    const val DiscoverScreen = "DiscoverScreen"
+    const val BookshelfScreen = "BookshelfScreen"
+    const val SettingScreen = "SettingScreen"
+    const val InfoScreen = "InfoScreen"
 }
 
 @Composable
@@ -44,21 +43,17 @@ fun MordecaiXApp(
     viewmodel: AppViewModel = koinViewModel<AppViewModel>(),
     navController: NavHostController = rememberNavController()
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = MordecaiXScreen.valueOf(
-        backStackEntry?.destination?.route ?: MordecaiXScreen.HistoryScreen.name
-    )
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
         NavHost(
             navController = navController,
-            startDestination = MordecaiXScreen.HistoryScreen.name,
+            startDestination = MordecaiXScreen.MainScreen,
         ) {
-            composableRoute(route = MordecaiXScreen.HistoryScreen.name) {
-                MainScreen(windowSize = windowSize)
+            composableRoute(route = MordecaiXScreen.MainScreen) {
+                MainScreen(windowSize = windowSize) {
+                    navController.navigate(MordecaiXScreen.InfoScreen)
+                }
             }
-            composableRoute(route = MordecaiXScreen.SettingScreen.name) {
-                SettingScreen(windowSize = windowSize)
-            }
+            composableRoute(route = MordecaiXScreen.InfoScreen) { InfoScreen(windowSize = windowSize) }
         }
     }
 }

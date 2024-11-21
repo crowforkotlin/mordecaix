@@ -16,10 +16,11 @@ androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 androidx-datastore = "1.1.1"
 
-compose-plugin = "1.7.0-rc01"
+skiko = "0.8.18"    # sync with jetbrains-compose
+compose-plugin = "1.7.1"
 junit = "4.13.2"
-kotlin = "2.0.20"
-ksp = "2.0.20-1.0.24"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.27"
 kotlinpoet = "1.17.0"
 kotlinx-coroutines = "1.9.0"
 buildconfig = "5.3.5"
@@ -27,7 +28,7 @@ kotlinxSerialization = "1.7.3"
 koin = "4.0.1-Beta1"
 ktor = "3.0.0"
 voyager = "1.1.0-beta02"
-androidx-room = "2.7.0-alpha07"
+androidx-room = "2.7.0-alpha11"
 androidx-sqlite = "2.5.0-alpha11"
 
 #collections [https://github.com/Kotlin/kotlinx.collections.immutable]
@@ -71,6 +72,7 @@ androidx-sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "an
 
 jetbrains-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+skiko = { module = "org.jetbrains.skiko:skiko", version.ref = "skiko" }
 
 jetbrains-kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }

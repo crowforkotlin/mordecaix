@@ -8,4 +8,3 @@ import okio.Path.Companion.toPath
 expect fun createDataStore() : DataStore<Preferences>
 
 fun createDataStore(producePath: () -> String): DataStore<Preferences> = PreferenceDataStoreFactory.createWithPath(produceFile = { producePath().toPath() })
-

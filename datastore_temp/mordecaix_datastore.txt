@@ -1,6 +1,6 @@
 1 {
-  1: "Key"
+  1: "StartDestinationScreen"
   2 {
-    4: 123
+    5: "SettingScreen"
   }
 }

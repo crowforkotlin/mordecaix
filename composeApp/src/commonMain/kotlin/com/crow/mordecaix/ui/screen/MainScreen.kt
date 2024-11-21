@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.Create
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,9 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -30,20 +25,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.crow.mordecaix.common.getString
+import com.crow.mordecaix.common.setString
+import com.crow.mordecaix.extensions.measureTimeNotnull
 import com.crow.mordecaix.ui.component.RippleRoundedFillBox
 import mordecaix.composeapp.generated.resources.Res
-import mordecaix.composeapp.generated.resources.source
+import mordecaix.composeapp.generated.resources.history
 import org.jetbrains.compose.resources.stringResource
+
+val items = listOf(MordecaiXScreen.HistoryScreen, MordecaiXScreen.DiscoverScreen, MordecaiXScreen.BookshelfScreen, MordecaiXScreen.SettingScreen)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(windowSize: WindowSizeClass) {
+fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
     val navController: NavHostController = rememberNavController()
-    val items = listOf(Icons.Rounded.Create, Icons.Rounded.Add, Icons.Rounded.AddCircle)
-    var barSelectedItem by remember { mutableStateOf(0) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
     val state = rememberLazyListState()
     if (windowSize.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
         AnimatedContent {
@@ -52,22 +52,29 @@ fun MainScreen(windowSize: WindowSizeClass) {
                     items.fastForEachIndexed { index, item ->
                         RippleRoundedFillBox(
                             modifierAfter = Modifier.padding(20.dp),
-                            selected = index == barSelectedItem,
+                            selected = item == navBackStackEntry?.destination?.route,
                             isSelectEnable = true,
                             innerColor = Color.Gray.copy(alpha = 0.6f),
                             outlineColor = Color.Green.copy(alpha = 0.6f),
-                            onClick = { barSelectedItem = index }
-
-                        ) {
-                            Icon(imageVector = item, contentDescription = null, tint = Color.Black)
-                        }
-                        /*NavigationRailItem(
-                            selected = index == barSelectedItem,
-                            onClick = { barSelectedItem = index },
-                            icon = {
-
+                            onClick = {
+                                setString("StartDestinationScreen", item)
+                                navController.navigate(item) {
+                                    // 防止在相同目的地之间重复导航
+                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                    // 避免重新创建以前的目标
+                                    launchSingleTop = true
+                                    // 恢复之前的导航状态
+                                    restoreState = true
+                                }
                             }
-                        )*/
+                        ) {
+                            when(item) {
+                                MordecaiXScreen.HistoryScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                MordecaiXScreen.DiscoverScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                MordecaiXScreen.BookshelfScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                MordecaiXScreen.SettingScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                            }
+                        }
                     }
                 }
                 MainNavHost(state, navController, windowSize)
@@ -80,21 +87,37 @@ fun MainScreen(windowSize: WindowSizeClass) {
                     TopAppBar(
                         title = {
                             Text(
-                                stringResource(Res.string.source),
+                                stringResource(Res.string.history),
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                             )
                         },
                     )
                 },
                 bottomBar = {
-                    BottomAppBar(
-                    ) {
+                    BottomAppBar {
                         items.forEachIndexed { index, item ->
                             NavigationBarItem(
-                                selected = index == barSelectedItem,
-                                onClick = { barSelectedItem = index },
+                                selected = item == navBackStackEntry?.destination?.route,
+                                onClick = {
+                                    setString("StartDestinationScreen", item)
+                                    navController.navigate(item) {
+                                        // 防止在相同目的地之间重复导航
+                                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                        // 避免重新创建以前的目标
+                                        launchSingleTop = true
+                                        // 恢复之前的导航状态
+                                        restoreState = true
+                                    }
+                                },
                                 colors = NavigationBarItemDefaults.colors(),
-                                icon = { Icon(imageVector = item, contentDescription = null, tint = if(index == barSelectedItem) Color.White else Color.Black) },
+                                icon = {
+                                    when(item) {
+                                        MordecaiXScreen.HistoryScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                        MordecaiXScreen.DiscoverScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                        MordecaiXScreen.BookshelfScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                        MordecaiXScreen.SettingScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                    }
+                               },
                             )
                         }
                     }
@@ -111,18 +134,25 @@ fun MainNavHost(
     state: LazyListState = rememberLazyListState(),
     navController: NavHostController,
     windowSize: WindowSizeClass,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
+    val currentScreen = measureTimeNotnull { getString("StartDestinationScreen") ?: MordecaiXScreen.HistoryScreen }
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = MordecaiXScreen.SourceScreen.name
+        startDestination = currentScreen
     ) {
-        composableRoute(route = MordecaiXScreen.SourceScreen.name) {
-            SourceScreen()
+        composableRoute(route = MordecaiXScreen.HistoryScreen) {
+            HistoryScreen(windowSize)
         }
-        composableRoute(route = MordecaiXScreen.HistoryScreen.name) {
-            HistoryScreen(windowSize = windowSize)
+        composableRoute(route = MordecaiXScreen.DiscoverScreen) {
+            DiscoverScreen()
+        }
+        composableRoute(route = MordecaiXScreen.BookshelfScreen) {
+            BookshelfScreen()
+        }
+        composableRoute(route = MordecaiXScreen.SettingScreen) {
+            SettingScreen(state, windowSize)
         }
     }
 }
