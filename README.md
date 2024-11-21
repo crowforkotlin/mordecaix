@@ -1,3 +1,6 @@
+> ![WARNING]
+>  Compiling a project will download about 3000 dependencies
+
 - **Implementation**
     - **Network**
         - **Ktor** ![badge][badge-android]  ![badge][badge-windows]  ![badge][badge-wasm]
