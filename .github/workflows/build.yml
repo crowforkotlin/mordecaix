@@ -1,8 +1,9 @@
 name: Build wasmJsDistribution
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
-  branches:
-    - main  # 可以根据你的仓库情况修改为目标分支
+  push:
+    branches:
+      - main
 
 jobs:
   build:
