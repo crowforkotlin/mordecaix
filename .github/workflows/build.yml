@@ -1,36 +1,45 @@
-name: Web CI
-
+name: Build & Ship
 on:
   push:
     branches:
       - main
-
 jobs:
-  build:
-
-    runs-on: ubuntu-22.04
+  web-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 21
+
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 21
-
-      - name: kotlinUpgradeYarnLock
-        run: ./gradlew kotlinUpgradeYarnLock
-
+          java-version: 17
 
       - name: Build web app
-        run: ./gradlew wasmJsBrowserDistribution
-
-      # If main branch update, deploy to gh-pages
-      - name: Deploy
-        #        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
-        uses: JamesIves/github-pages-deploy-action@v4.6.9
+        uses: nick-fields/retry@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          BRANCH: gh-web # The branch the action should deploy to.
-          FOLDER: composeApp/build/dist/wasmJs/productionExecutable # The folder the action should deploy.
-          CLEAN: true # Automatically remove deleted files from the deploy branch
+          timeout_minutes: 20
+          max_attempts: 2
+          command: ./gradlew :webApp:jsBrowserDevelopmentExecutableDistribution
+
+  wasm-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Build wasm app
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 2
+          command: ./gradlew :wasmApp:wasmBrowserDevelopmentExecutableDistribution
