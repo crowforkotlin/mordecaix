@@ -23,6 +23,22 @@ jobs:
           timeout_minutes: 20
           max_attempts: 2
           command: ./gradlew :composeApp:jsBrowserDevelopmentExecutableDistribution
+          
+      - name: logact
+        run: ls
+        
+      - name: Push WebAssembly build output to another repository
+        uses: cpina/github-action-push-to-another-repository@v1.7.2
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
+        with:
+          source-directory: build/dist/js
+          destination-github-username: 'crowforkotlin'
+          destination-repository-name: 'testyml1'
+          user-email: crowforkotlin@gmail.com
+          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+          target-branch: main
+
 
   wasm-build:
     runs-on: ubuntu-latest
