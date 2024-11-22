@@ -1,32 +1,29 @@
 name: Build & Ship
+
 on:
   push:
     branches:
-      - main
+      - main # Trigger the  workflow on push event to the main branch
+      -
 jobs:
   web-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
-
+    timeout-minutes: 45 # Set the timeout of 45 minutes for this job
+    uses: nick-fields/retry@v3
     steps:
-      - uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4  # Use checkout to support cloning local projects to runner environment
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'zulu' # Use Zulu provide jdk
           java-version: 17
 
-      - name: Build web app
-        uses: nick-fields/retry@v3
+      - name: Build web js app
         with:
           timeout_minutes: 20
           max_attempts: 2
           command: ./gradlew :composeApp:jsBrowserDevelopmentExecutableDistribution
-          
-      - name: logact Js
-        run: ls composeApp/build/dist/js
-        
+
       - name: Push WebAssembly build output to another repository
         uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
@@ -43,10 +40,9 @@ jobs:
   wasm-build:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-
+    uses: nick-fields/retry@v3
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -54,21 +50,20 @@ jobs:
           java-version: 17
 
       - name: Build wasm app
-        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 2
           command: ./gradlew :composeApp:wasmBrowserDevelopmentExecutableDistribution
 
       - name: logact Wasm
-        run: ls composeApp/build/dist/
-        
+        run: ls composeApp/build/dist/wasmJs/
+
       - name: Push WebAssembly build output to another repository
         uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
         with:
-          source-directory: composeApp/build/dist/wsamJs
+          source-directory: composeApp/build/dist/wasmJs/developmentExecutable
           destination-github-username: 'crowforkotlin'
           destination-repository-name: 'mordecaix-pages'
           user-email: crowforkotlin@gmail.com
