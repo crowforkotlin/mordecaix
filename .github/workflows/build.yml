@@ -24,20 +24,20 @@ jobs:
           max_attempts: 2
           command: ./gradlew :composeApp:jsBrowserDevelopmentExecutableDistribution
           
-      - name: logact
-        run: ls composeApp/build/
+      - name: logact Js
+        run: ls composeApp/build/dist/js
         
       - name: Push WebAssembly build output to another repository
         uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
         with:
-          source-directory: composeApp/build/dist/js
+          source-directory: composeApp/build/dist/js/developmentExecutable
           destination-github-username: 'crowforkotlin'
           destination-repository-name: 'testyml1'
           user-email: crowforkotlin@gmail.com
           commit-message: See ORIGIN_COMMIT from $GITHUB_REF
-          target-branch: main
+          target-branch: js
 
 
   wasm-build:
@@ -59,3 +59,18 @@ jobs:
           timeout_minutes: 20
           max_attempts: 2
           command: ./gradlew :composeApp:wasmBrowserDevelopmentExecutableDistribution
+
+      - name: logact Wasm
+        run: ls composeApp/build/dist/wsamJs
+        
+      - name: Push WebAssembly build output to another repository
+        uses: cpina/github-action-push-to-another-repository@v1.7.2
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
+        with:
+          source-directory: composeApp/build/dist/wsamJs/developmentExecutable
+          destination-github-username: 'crowforkotlin'
+          destination-repository-name: 'testyml1'
+          user-email: crowforkotlin@gmail.com
+          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+          target-branch: wasmJs
