@@ -109,9 +109,8 @@ kotlin {
         val nonAndroidMain by getting
         val jsCommonMain by getting
         val wasmJsMain by getting
-        wasmJsMain.dependencies { implementation(libs.jetbrains.browser) }
-        jsCommonMain.dependencies {
-        }
+        wasmJsMain.dependencies {  }
+        jsCommonMain.dependencies { implementation(libs.jetbrains.browser) }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
