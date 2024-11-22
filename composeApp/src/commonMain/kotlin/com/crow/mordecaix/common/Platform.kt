@@ -1,6 +1,6 @@
 package com.crow.mordecaix.common
 
-expect val commonPlatform : Platform
+expect val platform : Platform
 
 sealed class Platform(val name: String) {
     data object Android : Platform("Android")
