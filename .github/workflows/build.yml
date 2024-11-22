@@ -1,5 +1,5 @@
-name: Build and Distribute
-
+name: Build wasmJsDistribution
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   push:
     branches:
