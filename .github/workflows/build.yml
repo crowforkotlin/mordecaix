@@ -32,7 +32,7 @@ jobs:
         with:
           source-directory: composeApp/build/dist/js/developmentExecutable
           destination-github-username: 'crowforkotlin'
-          destination-repository-name: 'mordecaix-pages'
+          destination-repository-name: 'mordecaix-pages-js'
           user-email: crowforkotlin@gmail.com
           commit-message: See ORIGIN_COMMIT from $GITHUB_REF
           create-target-branch-if-needed: true
@@ -65,7 +65,7 @@ jobs:
         with:
           source-directory: composeApp/build/dist/wasmJs/developmentExecutable
           destination-github-username: 'crowforkotlin'
-          destination-repository-name: 'mordecaix-pages'
+          destination-repository-name: 'mordecaix-pages-wasmjs'
           user-email: crowforkotlin@gmail.com
           commit-message: See ORIGIN_COMMIT from $GITHUB_REF
           create-target-branch-if-needed: true
