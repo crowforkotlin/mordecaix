@@ -9,9 +9,9 @@ jobs:
   web-build:
     runs-on: ubuntu-latest
     timeout-minutes: 45 # Set the timeout of 45 minutes for this job
-    uses: nick-fields/retry@v3
     steps:
       - uses: actions/checkout@v4  # Use checkout to support cloning local projects to runner environment
+      - uses: nick-fields/retry@v3
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -40,9 +40,9 @@ jobs:
   wasm-build:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    uses: nick-fields/retry@v3
     steps:
       - uses: actions/checkout@v4
+      - uses: nick-fields/retry@v3
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
