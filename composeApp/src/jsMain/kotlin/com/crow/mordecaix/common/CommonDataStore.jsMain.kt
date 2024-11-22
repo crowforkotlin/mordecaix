@@ -1,8 +1,14 @@
 package com.crow.mordecaix.common
 
+
 private val mMap: MutableMap<String, Any> by lazy { mutableMapOf() }
 
-actual fun setString(key: String, value: String) { mMap[key] = value }
+
+actual fun setString(key: String, value: String) { mMap[key] = value
+
+
+
+}
 actual fun setInt(key: String, value: Int) { mMap[key] = value }
 actual fun setLong(key: String, value: Long) { mMap[key] = value }
 actual fun setFloat(key: String, value: Float) { mMap[key] = value }

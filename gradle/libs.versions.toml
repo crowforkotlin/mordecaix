@@ -45,6 +45,8 @@ coil = "3.0.0-rc01"
 # ks file io
 kstore = "0.9.1"
 
+browser = "0.3"
+
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -112,6 +114,7 @@ jetbrains-compose-material3-adaptive = { module = "org.jetbrains.compose.materia
 jetbrains-compose-material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version = "1.0.0-rc01" }
 jetbrains-compose-material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version = "1.0.0-rc01" }
 jetbrains-androidx-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version = "2.7.0-alpha07" }
+jetbrains-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "browser" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
