@@ -22,7 +22,7 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 2
-          command: ./gradlew :webApp:jsBrowserDevelopmentExecutableDistribution
+          command: ./gradlew :composeApp:jsBrowserDevelopmentExecutableDistribution
 
   wasm-build:
     runs-on: ubuntu-latest
@@ -42,4 +42,4 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 2
-          command: ./gradlew :wasmApp:wasmBrowserDevelopmentExecutableDistribution
+          command: ./gradlew :composeApp:wasmBrowserDevelopmentExecutableDistribution
