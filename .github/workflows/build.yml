@@ -2,8 +2,8 @@ name: Web CI
 
 on:
   push:
-    tags:
-      - 'main'
+    branches:
+      - main
 
 jobs:
   build:
