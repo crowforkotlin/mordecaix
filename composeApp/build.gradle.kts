@@ -53,6 +53,10 @@ kotlin {
                     withNative()
                 }
             }
+            group("jsCommon") {
+                withJs()
+                withWasmJs()
+            }
         }
     })
 
@@ -103,9 +107,9 @@ kotlin {
         val commonMain by getting
         val nonJsMain by getting
         val nonAndroidMain by getting
-        val jsMain by getting
+        val jsCommonMain by getting
 
-        jsMain.dependencies { }
+        jsCommonMain.dependencies { }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)

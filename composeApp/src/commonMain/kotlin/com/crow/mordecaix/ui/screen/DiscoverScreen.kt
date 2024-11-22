@@ -21,7 +21,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.crow.mordecaix.model.exposed.SourceModel
 import com.crow.mordecaix.ui.component.RippleRoundedOutlineBox
 import com.crow.mordecaix.ui.theme.MordecaiXTheme
 import dev.chrisbanes.haze.HazeState
@@ -31,14 +30,13 @@ import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.mp.KoinPlatform.getKoin
 
 
 @OptIn(ExperimentalResourceApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
 fun DiscoverScreen() {
     val hazeRadius by remember { mutableStateOf(0.dp) }
-    val sources = getKoin().get<List<SourceModel>>()
+    val sources = (0..100).toList()
     val color = MaterialTheme.colorScheme.primary
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(sources.size) {
@@ -65,7 +63,7 @@ fun DiscoverScreen() {
                         modifier = Modifier.padding(10.dp)
                     )
                     Text(
-                        text = sources[it].mName,
+                        text = sources[it].toString(),
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
                         modifier = Modifier.padding(10.dp)
 
