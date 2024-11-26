@@ -1,6 +1,6 @@
 1 {
   1: "StartDestinationScreen"
   2 {
-    5: "SettingScreen"
+    5: "BookshelfScreen"
   }
 }

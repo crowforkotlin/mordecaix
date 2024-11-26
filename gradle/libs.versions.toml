@@ -46,6 +46,7 @@ coil = "3.0.0-rc01"
 kstore = "0.9.1"
 
 browser = "0.3"
+flatlaf = "3.5.2"
 
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
@@ -115,6 +116,9 @@ jetbrains-compose-material3-adaptive-layout = { module = "org.jetbrains.compose.
 jetbrains-compose-material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version = "1.0.0-rc01" }
 jetbrains-androidx-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version = "2.7.0-alpha07" }
 jetbrains-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "browser" }
+jetbrains-jewel-decorated = { module = "org.jetbrains.jewel:jewel-int-ui-decorated-window-243", version = "0.26.2" }
+
+flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
@@ -133,6 +137,7 @@ kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" 
 
 # for jsBrowser and wasmJsBrowser
 kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

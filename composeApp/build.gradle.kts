@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.Optimization
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -155,6 +154,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.jetbrains.jewel.decorated)
+            implementation(libs.flatlaf)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
