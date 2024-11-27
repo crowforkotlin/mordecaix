@@ -154,7 +154,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.jetbrains.jewel.decorated)
-            implementation(libs.flatlaf)
+//            implementation(libs.flatlaf)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -212,9 +212,19 @@ android {
 compose.desktop {
     application {
         mainClass = "com.crow.mordecaix.MainKt"
+        buildTypes.release {
+            proguard {
+                this.optimize = false
+                this.obfuscate = true
+                this.configurationFiles.from(project.file("src/desktopMain/compose-desktop.pro"))
+            }
+        }
         nativeDistributions {
+            modules(
+                "jdk.unsupported",  // 'sun/misc/Unsafe' error
+                "java.net.http",    // 'java/net/http/HttpClient$Version ' error
+            )
             appResourcesRootDir = layout.projectDirectory.dir("src/desktopMain/assets")
-            jvmArgs += "-splash:${'$'}APPDIR/resources/splash.png"
             targetFormats(
                 TargetFormat.Dmg,
                 TargetFormat.Msi,
@@ -224,7 +234,7 @@ compose.desktop {
                 TargetFormat.Rpm,
                 TargetFormat.Pkg
             )
-            packageName = "com.crow.mordecaix"
+            packageName = "mordecaix"
             packageVersion = "1.0.0"
         }
     }

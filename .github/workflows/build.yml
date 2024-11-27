@@ -82,16 +82,10 @@ jobs:
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
       - uses: actions/checkout@v4
-
-      # Step 1: 检出代码
-
-      # Step 2: 下载JBR (JetBrains Runtime)
       - name: Download and Extract JBR
         run: |
           mkdir -p C:\jbr
           curl -L -o C:\jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-windows-x64-b1312.2.tar.gz
-
-      # Step 3: 配置 JAVA_HOME 环境变量
       - name: Configure JAVA_HOME
         uses: actions/setup-java@v4
         with:
@@ -102,21 +96,33 @@ jobs:
           cache-dependency-path: | # regex to match all sub-projects
             **/*.gradle*
             **/gradle-wrapper.properties
-
-      # Step 4: 构建 EXE
-      - name: Build exe app
+      - name: Build Windows Debug App
         run: |
           .\gradlew packageUberJarForCurrentOS
           .\gradlew createDistributable
           .\gradlew packageExe
-
-      # Step 5: 保存构建产物
-      - name: Archive Artifacts
+      - name: Archive Windows Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: distributable
+          name: Windows Debug App
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main/app
+      - name: Build Windows Release App
+        run: |
+          .\gradlew createReleaseDistributable
+          .\gradlew packageReleaseExe
+      - name: Archive Windows Release Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Release App
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release/app
+
+      - name: Print Test
+        run: |
+          ls composeApp/build/compose/binaries
+          ls composeApp/build/compose/binaries/main
+          ls composeApp/build/compose/binaries/main-release
 
 
   android-build:
