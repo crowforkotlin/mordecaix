@@ -141,7 +141,7 @@ jobs:
             **/gradle-wrapper.properties
       - name: Build Android Debug App
         run: |
-          ./gradlew assembleRelease
+          ./gradlew assembleDebug
       - name: Archive Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
