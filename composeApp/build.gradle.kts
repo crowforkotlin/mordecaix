@@ -185,7 +185,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = properties["version.name.app"].toString()
     }
     packaging {
         resources {
@@ -235,7 +235,7 @@ compose.desktop {
                 TargetFormat.Pkg
             )
             packageName = "mordecaix"
-            packageVersion = "1.0.0"
+            packageVersion = properties["version.name.desktop"].toString()
         }
     }
 }
