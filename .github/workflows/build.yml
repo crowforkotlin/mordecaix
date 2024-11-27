@@ -133,17 +133,19 @@ jobs:
           cache-dependency-path: | # regex to match all sub-projects
             **/*.gradle*
             **/gradle-wrapper.properties
-      - name: Build Android App
+      - name: Build Android Debug App
         run: |
-          ./gradlew assembleDebug
           ./gradlew assembleRelease
-      - name: Archive Artifacts
+      - name: Archive Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Android Debug Apk
           if-no-files-found: ignore
           path: composeApp/build/outputs/apk/debug
-      - name: Archive Artifacts
+      - name: Build Android Release App
+        run: |
+          ./gradlew assembleRelease
+      - name: Archive Release Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Android Release Apk
