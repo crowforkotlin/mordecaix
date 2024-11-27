@@ -29,7 +29,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.crow.mordecaix.common.Platform
 import com.crow.mordecaix.common.getString
+import com.crow.mordecaix.common.platform
 import com.crow.mordecaix.common.setString
 import com.crow.mordecaix.extensions.measureTimeNotnull
 import com.crow.mordecaix.ui.component.RippleRoundedFillBox
@@ -82,48 +84,52 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
         }
     } else {
         AnimatedContent {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(
-                                stringResource(Res.string.history),
-                                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-                            )
-                        },
-                    )
-                },
-                bottomBar = {
-                    BottomAppBar {
-                        items.forEachIndexed { index, item ->
-                            NavigationBarItem(
-                                selected = item == navBackStackEntry?.destination?.route,
-                                onClick = {
-                                    setString("StartDestinationScreen", item)
-                                    navController.navigate(item) {
-                                        // 防止在相同目的地之间重复导航
-                                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                                        // 避免重新创建以前的目标
-                                        launchSingleTop = true
-                                        // 恢复之前的导航状态
-                                        restoreState = true
-                                    }
-                                },
-                                colors = NavigationBarItemDefaults.colors(),
-                                icon = {
-                                    when(item) {
-                                        MordecaiXScreen.HistoryScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
-                                        MordecaiXScreen.DiscoverScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
-                                        MordecaiXScreen.BookshelfScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
-                                        MordecaiXScreen.SettingScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
-                                    }
-                               },
-                            )
+            if(platform == Platform.Desktop) {
+                MainNavHost(state, navController, windowSize)
+            } else {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(
+                                    stringResource(Res.string.history),
+                                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                                )
+                            },
+                        )
+                    },
+                    bottomBar = {
+                        BottomAppBar {
+                            items.forEachIndexed { index, item ->
+                                NavigationBarItem(
+                                    selected = item == navBackStackEntry?.destination?.route,
+                                    onClick = {
+                                        setString("StartDestinationScreen", item)
+                                        navController.navigate(item) {
+                                            // 防止在相同目的地之间重复导航
+                                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                            // 避免重新创建以前的目标
+                                            launchSingleTop = true
+                                            // 恢复之前的导航状态
+                                            restoreState = true
+                                        }
+                                    },
+                                    colors = NavigationBarItemDefaults.colors(),
+                                    icon = {
+                                        when(item) {
+                                            MordecaiXScreen.HistoryScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                            MordecaiXScreen.DiscoverScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                            MordecaiXScreen.BookshelfScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                            MordecaiXScreen.SettingScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
+                                        }
+                                    },
+                                )
+                            }
                         }
                     }
+                ) { innerPadding ->
+                    MainNavHost(state, navController, windowSize, Modifier.padding(innerPadding))
                 }
-            ) { innerPadding ->
-                MainNavHost(state, navController, windowSize, Modifier.padding(innerPadding))
             }
         }
     }

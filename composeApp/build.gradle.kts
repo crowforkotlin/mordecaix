@@ -65,7 +65,6 @@ kotlin {
     wasmJs {
         moduleName = "ComposeApp"
         browser {
-            val projectDirPath = project.projectDir.path
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
                 /*devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
