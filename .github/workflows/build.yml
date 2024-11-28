@@ -156,7 +156,7 @@ jobs:
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main-release/app
 
-  Ubuntu-desktop-build:
+  ubuntu-desktop-build:
     needs: read-properties
     runs-on: ubuntu-latest
     timeout-minutes: 45 # 设置超时时间为 45 分钟
@@ -181,9 +181,9 @@ jobs:
             **/gradle-wrapper.properties
       - name: Build Ubuntu Debug App
         run: |
-          .\gradlew packageUberJarForCurrentOS
-          .\gradlew createDistributable
-          .\gradlew packageDeb
+          ./gradlew packageUberJarForCurrentOS
+          ./gradlew createDistributable
+          ./gradlew packageDeb
           ls composeApp/build/compose
           ls composeApp/build/compose/binaries
           ls composeApp/build/compose/binaries/main
@@ -201,8 +201,8 @@ jobs:
           path: composeApp/build/compose/binaries/main/app
       - name: Build Ubuntu Release App
         run: |
-          .\gradlew createReleaseDistributable
-          .\gradlew packageReleaseDeb
+          ./gradlew createReleaseDistributable
+          ./gradlew packageReleaseDeb
           ls composeApp/build/compose
           ls composeApp/build/compose/binaries
           ls composeApp/build/compose/binaries/main-release
@@ -240,7 +240,7 @@ jobs:
       - name: Archive Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Android Debug Apk
+          name: Android Debug Apk - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
           path: composeApp/build/outputs/apk/debug
       - name: Build Android Release App
@@ -249,6 +249,6 @@ jobs:
       - name: Archive Release Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Android Release Apk
+          name: Android Release Apk - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
           path: composeApp/build/outputs/apk/release
