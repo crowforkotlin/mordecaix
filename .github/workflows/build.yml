@@ -104,6 +104,9 @@ jobs:
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
       - uses: actions/checkout@v4
+      - name: print
+        run: |
+          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.version.name.desktop }}.exe"
       - name: Download and Extract JBR
         run: |
           mkdir -p C:\jbr
