@@ -3,7 +3,11 @@ name: Build & Ship
 on:
   push:
     branches:
-      - main # Trigger the  workflow on push event to the main branch
+      - dev  # 仅当推送到 main 分支时触发
+  pull_request:
+    types: [closed]  # 检测 PR 合并事件
+    branches:
+      - main  # 仅当 PR 合并到 main 分支时触发
 
 env:
   APP_NAME: mordecaix
@@ -26,137 +30,8 @@ jobs:
           path: './gradle.properties'
           properties: 'version.name.desktop version.name.app version.name.web'
 
-  web-build:
-    needs: read-properties
-    runs-on: ubuntu-latest
-    timeout-minutes: 45 # Set the timeout of 45 minutes for this job
-    steps:
-      - uses: actions/checkout@v4  # Use checkout to support cloning local projects to runner environment
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu' # Use Zulu provide jdk
-          java-version: 17
-          cache: 'gradle'
-          cache-dependency-path: | # regex to match all sub-projects
-            **/*.gradle*
-            **/gradle-wrapper.properties
 
-      - name: Build web js app
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 2
-          command: ./gradlew :composeApp:jsBrowserDevelopmentExecutableDistribution
-
-      - name: Push WebAssembly build output to another repository
-        uses: cpina/github-action-push-to-another-repository@v1.7.2
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
-        with:
-          source-directory: composeApp/build/dist/js/developmentExecutable
-          destination-github-username: 'crowforkotlin'
-          destination-repository-name: 'mordecaix-pages-js'
-          user-email: crowforkotlin@gmail.com
-          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
-          create-target-branch-if-needed: true
-          target-branch: js
-
-
-  wasm-build:
-    needs: read-properties
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: 17
-          cache: 'gradle'
-          cache-dependency-path: | # regex to match all sub-projects
-            **/*.gradle*
-            **/gradle-wrapper.properties
-
-      - name: Build wasm app
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 2
-          command: ./gradlew :composeApp:wasmBrowserDevelopmentExecutableDistribution
-      - name: Push WebAssembly build output to another repository
-        uses: cpina/github-action-push-to-another-repository@v1.7.2
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
-        with:
-          source-directory: composeApp/build/dist/wasmJs/developmentExecutable
-          destination-github-username: 'crowforkotlin'
-          destination-repository-name: 'mordecaix-pages-wasmjs'
-          user-email: crowforkotlin@gmail.com
-          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
-          create-target-branch-if-needed: true
-          target-branch: wasmJs
-
-
-  windows-desktop-build:
-    needs: read-properties
-    runs-on: windows-latest
-    timeout-minutes: 45 # 设置超时时间为 45 分钟
-    steps:
-      - uses: actions/checkout@v4
-      - name: print
-        run: |
-          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe"
-      - name: Download and Extract JBR
-        run: |
-          mkdir -p C:\jbr
-          curl -L -o C:\jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-windows-x64-b1312.2.tar.gz
-      - name: Configure JAVA_HOME
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'jdkfile'
-          jdkFile: C:\jbr.tar.gz
-          java-version: '17.0.11'
-          cache: 'gradle'
-          cache-dependency-path: | # regex to match all sub-projects
-            **/*.gradle*
-            **/gradle-wrapper.properties
-      - name: Build Windows Debug App
-        run: |
-          .\gradlew packageUberJarForCurrentOS
-          .\gradlew createDistributable
-          .\gradlew packageExe
-      - name: Archive Windows Debug App Installer Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Windows Debug App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-          if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main/exe/
-      - name: Archive Windows Debug Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Windows Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-          if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main/app
-      - name: Build Windows Release App
-        run: |
-          .\gradlew createReleaseDistributable
-          .\gradlew packageReleaseExe
-      - name: Archive Windows Release App Installer Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Windows Release App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-          if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main-release/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
-      - name: Archive Windows Release App Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-          if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main-release/app
-
-  ubuntu-desktop-build:
+  macos-desktop-build:
     needs: read-properties
     runs-on: ubuntu-latest
     timeout-minutes: 45 # 设置超时时间为 45 分钟
@@ -166,9 +41,9 @@ jobs:
         run: |
           echo "Ubuntu Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe"
       - name: Download and Extract JBR
-        run: | 
+        run: |
           mkdir -p /home/runner/jbr
-          curl -L -o /home/runner/jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-linux-x64-b1312.2.tar.gz
+          curl -L -o /home/runner/jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-osx-aarch64-b1312.2.tar.gz
       - name: Configure JAVA_HOME
         uses: actions/setup-java@v4
         with:
@@ -183,72 +58,32 @@ jobs:
         run: |
           ./gradlew packageUberJarForCurrentOS
           ./gradlew createDistributable
-          ./gradlew packageDeb
-          ls composeApp/build/compose
-          ls composeApp/build/compose/binaries
-          ls composeApp/build/compose/binaries/main
+          ./gradlew packagePkg
       - name: Archive Ubuntu Debug App Installer Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Debug App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main
+          path: composeApp/build/compose/binaries/main/app
       - name: Archive Ubuntu Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main/app
+          path: composeApp/build/compose/binaries/main/deb
       - name: Build Ubuntu Release App
         run: |
           ./gradlew createReleaseDistributable
-          ./gradlew packageReleaseDeb
-          ls composeApp/build/compose
-          ls composeApp/build/compose/binaries
-          ls composeApp/build/compose/binaries/main-release
+          ./gradlew packageReleasePkg
       - name: Archive Ubuntu Release App Installer Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Release App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main-release
+          path: composeApp/build/compose/binaries/main-release/app
       - name: Archive Ubuntu Release App Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main-release/app
-
-  android-build:
-    needs: read-properties
-    runs-on: ubuntu-latest
-    timeout-minutes: 45 # 设置超时时间为 45 分钟
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu' # Use Zulu provide jdk
-          java-version: 17
-          cache: 'gradle'
-          cache-dependency-path: | # regex to match all sub-projects
-            **/*.gradle*
-            **/gradle-wrapper.properties
-      - name: Build Android Debug App
-        run: |
-          ./gradlew assembleDebug
-      - name: Archive Debug Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Android Debug Apk - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}
-          if-no-files-found: ignore
-          path: composeApp/build/outputs/apk/debug
-      - name: Build Android Release App
-        run: |
-          ./gradlew assembleRelease
-      - name: Archive Release Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Android Release Apk - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}
-          if-no-files-found: ignore
-          path: composeApp/build/outputs/apk/release
+          path: composeApp/build/compose/binaries/main-release/deb
