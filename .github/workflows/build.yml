@@ -5,7 +5,7 @@ on:
     branches:
       - dev  # 仅当推送到 main 分支时触发
   pull_request:
-    types: [closed]  # 检测 PR 合并事件
+    types: [ closed ]  # 检测 PR 合并事件
     branches:
       - main  # 仅当 PR 合并到 main 分支时触发
 
@@ -33,7 +33,7 @@ jobs:
 
   macos-desktop-build:
     needs: read-properties
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
       - uses: actions/checkout@v4
