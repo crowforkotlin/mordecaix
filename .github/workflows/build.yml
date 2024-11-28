@@ -127,33 +127,35 @@ jobs:
           .\gradlew packageUberJarForCurrentOS
           .\gradlew createDistributable
           .\gradlew packageExe
+      - name: Archive Windows Debug App Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
       - name: Archive Windows Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Debug App - ${{ env.APP_NAME }}${{ needs.read-properties.version.name.desktop }}.exe
+          name: Windows Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main/app
       - name: Build Windows Release App
         run: |
           .\gradlew createReleaseDistributable
           .\gradlew packageReleaseExe
-      - name: Archive Windows Release Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Windows Release App
-          if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main-release/app
       - name: Archive Windows Release App Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe
+          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main-release/exe/*
-      - name: Print Test
-        run: |
-          ls composeApp/build/compose/binaries
-          ls composeApp/build/compose/binaries/main
-          ls composeApp/build/compose/binaries/main-release
+          path: composeApp/build/compose/binaries/main-release/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
+      - name: Archive Windows Release Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release/app
+
 
   android-build:
     needs: read-properties
