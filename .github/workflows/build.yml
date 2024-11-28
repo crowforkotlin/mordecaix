@@ -12,9 +12,6 @@ jobs:
   # Step 1: 读取属性文件
   read-properties:
     runs-on: ubuntu-latest
-    outputs:
-      api_key: ${{ steps.read.outputs.the_key_of_a_property }}
-      another_key: ${{ steps.read.outputs.the_key_of_another_property }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -106,7 +103,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: print
         run: |
-          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.properties.outputs.version-name-desktop }}.exe"
+          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.steps.properties.outputs.version-name-desktop }}.exe"
       - name: Download and Extract JBR
         run: |
           mkdir -p C:\jbr
@@ -145,7 +142,7 @@ jobs:
       - name: Archive Windows Release App Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Release App - ${{ env.APP_NAME }}${{ needs.properties.outputs.version-name-desktop }}.exe
+          name: Windows Release App - ${{ env.APP_NAME }}${{ needs.steps.properties.outputs.version-name-desktop }}.exe
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main-release/exe/*
       - name: Print Test
