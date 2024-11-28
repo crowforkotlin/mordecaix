@@ -99,7 +99,7 @@ jobs:
           target-branch: wasmJs
 
 
-  desktop-build:
+  windows-desktop-build:
     needs: read-properties
     runs-on: windows-latest
     timeout-minutes: 45 # 设置超时时间为 45 分钟
@@ -127,12 +127,12 @@ jobs:
           .\gradlew packageUberJarForCurrentOS
           .\gradlew createDistributable
           .\gradlew packageExe
-      - name: Archive Windows Debug App Artifacts
+      - name: Archive Windows Debug App Installer Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          name: Windows Debug App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
-          path: composeApp/build/compose/binaries/main/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
+          path: composeApp/build/compose/binaries/main/exe/
       - name: Archive Windows Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -143,19 +143,81 @@ jobs:
         run: |
           .\gradlew createReleaseDistributable
           .\gradlew packageReleaseExe
-      - name: Archive Windows Release App Artifacts
+      - name: Archive Windows Release App Installer Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          name: Windows Release App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main-release/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
-      - name: Archive Windows Release Artifacts
+      - name: Archive Windows Release App Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main-release/app
 
+  Ubuntu-desktop-build:
+    needs: read-properties
+    runs-on: ubuntu-latest
+    timeout-minutes: 45 # 设置超时时间为 45 分钟
+    steps:
+      - uses: actions/checkout@v4
+      - name: print
+        run: |
+          echo "Ubuntu Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe"
+      - name: Download and Extract JBR
+        run: | 
+          mkdir -p /home/runner/jbr
+          curl -L -o /home/runner/jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-linux-x64-b1312.2.tar.gz
+      - name: Configure JAVA_HOME
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'jdkfile'
+          jdkFile: /home/runner/jbr.tar.gz
+          java-version: '17.0.11'
+          cache: 'gradle'
+          cache-dependency-path: | # regex to match all sub-projects
+            **/*.gradle*
+            **/gradle-wrapper.properties
+      - name: Build Ubuntu Debug App
+        run: |
+          .\gradlew packageUberJarForCurrentOS
+          .\gradlew createDistributable
+          .\gradlew packageDeb
+          ls composeApp/build/compose
+          ls composeApp/build/compose/binaries
+          ls composeApp/build/compose/binaries/main
+      - name: Archive Ubuntu Debug App Installer Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ubuntu Debug App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main
+      - name: Archive Ubuntu Debug Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ubuntu Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main/app
+      - name: Build Ubuntu Release App
+        run: |
+          .\gradlew createReleaseDistributable
+          .\gradlew packageReleaseDeb
+          ls composeApp/build/compose
+          ls composeApp/build/compose/binaries
+          ls composeApp/build/compose/binaries/main-release
+      - name: Archive Ubuntu Release App Installer Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ubuntu Release App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release
+      - name: Archive Ubuntu Release App Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ubuntu Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release/app
 
   android-build:
     needs: read-properties
