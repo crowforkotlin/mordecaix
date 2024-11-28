@@ -230,7 +230,6 @@ compose.desktop {
                 TargetFormat.Msi,
                 TargetFormat.Deb,
                 TargetFormat.Exe,
-//                TargetFormat.AppImage,
                 TargetFormat.Rpm,
                 TargetFormat.Pkg
             )

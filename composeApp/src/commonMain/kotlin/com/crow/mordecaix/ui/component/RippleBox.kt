@@ -97,6 +97,7 @@ private fun RippleBox(
                 awaitPointerEventScope {
                     while (true) {
                         val event = awaitPointerEvent()
+                        println(event.type)
                         when (event.type) {
                             PointerEventType.Enter -> {
                                 isEnter = true
@@ -106,7 +107,9 @@ private fun RippleBox(
                             PointerEventType.Exit -> {
                                 isEnter = false
                             }
-
+                            PointerEventType.Unknown ->  {
+                                isEnter = false
+                            }
                             PointerEventType.Release -> {
                                 isEnter = false
                             }

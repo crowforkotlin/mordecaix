@@ -5,8 +5,28 @@ on:
     branches:
       - main # Trigger the  workflow on push event to the main branch
 
+env:
+  APP_NAME: mordecaix
+
 jobs:
+  # Step 1: 读取属性文件
+  read-properties:
+    runs-on: ubuntu-latest
+    outputs:
+      api_key: ${{ steps.read.outputs.the_key_of_a_property }}
+      another_key: ${{ steps.read.outputs.the_key_of_another_property }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Read Properties File
+        id: read
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: './gradle.properties'
+          properties: 'version.name.desktop version.name.app version.name.web'
+
   web-build:
+    needs: read-properties
     runs-on: ubuntu-latest
     timeout-minutes: 45 # Set the timeout of 45 minutes for this job
     steps:
@@ -43,6 +63,7 @@ jobs:
 
 
   wasm-build:
+    needs: read-properties
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -78,6 +99,7 @@ jobs:
 
 
   desktop-build:
+    needs: read-properties
     runs-on: windows-latest
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
@@ -104,7 +126,7 @@ jobs:
       - name: Archive Windows Debug Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Debug App
+          name: Windows Debug App - ${{ env.APP_NAME }}${{ needs.read-properties.version.name.desktop }}.exe
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main/app
       - name: Build Windows Release App
@@ -117,15 +139,20 @@ jobs:
           name: Windows Release App
           if-no-files-found: ignore
           path: composeApp/build/compose/binaries/main-release/app
-
+      - name: Archive Windows Release App Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.version.name.desktop }}.exe
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release/exe/*
       - name: Print Test
         run: |
           ls composeApp/build/compose/binaries
           ls composeApp/build/compose/binaries/main
           ls composeApp/build/compose/binaries/main-release
 
-
   android-build:
+    needs: read-properties
     runs-on: ubuntu-latest
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
