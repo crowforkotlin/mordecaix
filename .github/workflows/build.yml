@@ -51,14 +51,14 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 2
-          command: ./gradlew :composeApp:jsBrowserDevelopmentExecutableDistribution
+          command: ./gradlew :composeApp:JsBrowserDistribution
 
       - name: Push WebAssembly build output to another repository
         uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
         with:
-          source-directory: composeApp/build/dist/js/developmentExecutable
+          source-directory: composeApp/build/dist/js/productionExecutable
           destination-github-username: 'crowforkotlin'
           destination-repository-name: 'mordecaix-pages-js'
           user-email: crowforkotlin@gmail.com
@@ -88,13 +88,13 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 2
-          command: ./gradlew :composeApp:wasmBrowserDevelopmentExecutableDistribution
+          command: ./gradlew :composeApp:wasmJsBrowserDistribution
       - name: Push WebAssembly build output to another repository
         uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
         with:
-          source-directory: composeApp/build/dist/wasmJs/developmentExecutable
+          source-directory: composeApp/build/dist/wasmJs/productionExecutable
           destination-github-username: 'crowforkotlin'
           destination-repository-name: 'mordecaix-pages-wasmjs'
           user-email: crowforkotlin@gmail.com
