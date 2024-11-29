@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 
+import io.github.fourlastor.construo.Target
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -14,6 +15,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.github.fourlastor.construo)
+    id("dev.hydraulic.conveyor") version "1.12"
 }
 
 room {
@@ -21,6 +23,10 @@ room {
 }
 
 kotlin {
+    jvmToolchain {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 
     applyHierarchyTemplate(KotlinHierarchyTemplate {
         withSourceSetTree(
@@ -155,6 +161,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.jetbrains.jewel.decorated)
+            // Conveyor API: Manage automatic updates.
+            implementation("dev.hydraulic.conveyor:conveyor-control:1.1")
 //            implementation(libs.flatlaf)
         }
         nativeMain.dependencies {
@@ -172,6 +180,15 @@ kotlin {
         }
     }
 }
+
+// region Work around temporary Compose bugs.
+configurations.all {
+    attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
+        attribute(Attribute.of("ui", String::class.java), "awt")
+    }
+}
+
 
 android {
     namespace = "com.crow.mordecaix"
@@ -210,7 +227,15 @@ android {
     }
 }
 
+java {
+    toolchain {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 compose.desktop {
+    group = "com.crow.mordecaix.desktop"
+    version = "1.0.0"
     application {
         mainClass = "com.crow.mordecaix.MainKt"
         buildTypes.release {
@@ -236,6 +261,10 @@ compose.desktop {
             )
             packageName = "mordecaix"
             packageVersion = properties["version.name.desktop"].toString()
+            if (System.getProperty("os.name").contains("Mac")) {
+                jvmArgs("--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED")
+                jvmArgs("--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED")
+            }
         }
     }
 }
@@ -247,6 +276,11 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
+
+    linuxAmd64(compose.desktop.linux_x64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
 }
 
 // https://youtrack.jetbrains.com/issue/KT-56025

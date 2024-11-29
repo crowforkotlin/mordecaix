@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.useResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.crow.mordecaix.common.getAppDatabase
 import com.crow.mordecaix.ui.theme.BLUEF9
@@ -31,6 +32,14 @@ import java.awt.Dimension
 fun main() = application {
     initializeApplication()
     getAppDatabase()
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "MordecaiX",
+    ) {
+        window.minimumSize = Dimension(352,320)
+
+        App()
+    }
     IntUiTheme(
         theme = JewelTheme.lightThemeDefinition(),
         styling = ComponentStyling.default()
