@@ -5,6 +5,7 @@
   |:---------------------------------------------------:|
 
 > [!TIP]
+> **See Action -> [Auto Package & Publish](https://github.com/crowforkotlin/mordecaix-source/actions)**
 > 
 > **(Preview) https://crowforkotlin.github.io/mordecaix-pages-js/**
 >
