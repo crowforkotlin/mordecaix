@@ -27,7 +27,6 @@ kotlin {
         vendor = JvmVendorSpec.JETBRAINS
         languageVersion = JavaLanguageVersion.of(17)
     }
-
     applyHierarchyTemplate(KotlinHierarchyTemplate {
         withSourceSetTree(
             KotlinSourceSetTree.main,
@@ -158,6 +157,7 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+//            implementation(libs.jna.core)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.jetbrains.jewel.decorated)
@@ -226,7 +226,6 @@ android {
         debugImplementation(libs.androidx.compose.ui.tooling)
     }
 }
-
 java {
     toolchain {
         vendor = JvmVendorSpec.JETBRAINS
@@ -238,6 +237,8 @@ compose.desktop {
     version = "1.0.0"
     application {
         mainClass = "com.crow.mordecaix.MainKt"
+//        javaHome = "/Users/crowforkotlin/Downloads/jbr_jcef-17.0.11-osx-aarch64-b1312.2/Contents/Home/"
+        javaHome = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home/"
         buildTypes.release {
             proguard {
                 this.optimize = false
@@ -247,11 +248,15 @@ compose.desktop {
         }
         nativeDistributions {
             modules(
-                "jdk.unsupported",  // 'sun/misc/Unsafe' error
-                "java.net.http",    // 'java/net/http/HttpClient$Version ' error
+                "java.instrument",
+                "java.naming",
+                "java.sql",
+                "jdk.management",
+                "jdk.unsupported",
+                "java.net.http",
             )
             appResourcesRootDir = layout.projectDirectory.dir("src/desktopMain/assets")
-            targetFormats(
+            targetFormats(º
                 TargetFormat.Dmg,
                 TargetFormat.Msi,
                 TargetFormat.Deb,
@@ -261,9 +266,18 @@ compose.desktop {
             )
             packageName = "mordecaix"
             packageVersion = properties["version.name.desktop"].toString()
+            jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+            jvmArgs("--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED")
             if (System.getProperty("os.name").contains("Mac")) {
                 jvmArgs("--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED")
                 jvmArgs("--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED")
+            }
+            macOS {
+                bundleID = "com.crow.mordecaix"
+                mainClass = "com.crow.mordecaix.MainKt"
+                appCategory = "public.app-category.developer-tools"
+                javaHome = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home/"
+                entitlementsFile.set(project.file("default.entitlements"))
             }
         }
     }

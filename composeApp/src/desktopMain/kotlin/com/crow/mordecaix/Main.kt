@@ -26,43 +26,45 @@ import org.jetbrains.jewel.window.DecoratedWindowScope
 import org.jetbrains.jewel.window.TitleBar
 import org.jetbrains.jewel.window.styling.TitleBarColors
 import org.jetbrains.jewel.window.styling.TitleBarStyle
+import java.awt.Component
 import java.awt.Dimension
+import java.awt.Graphics
+import java.awt.Insets
+import javax.swing.JFrame
+import javax.swing.JMenuBar
+import javax.swing.JTextPane
+import javax.swing.border.Border
+import javax.swing.plaf.MenuBarUI
 
 @OptIn(ExperimentalResourceApi::class)
 fun main() = application {
     initializeApplication()
     getAppDatabase()
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "MordecaiX",
-    ) {
-        window.minimumSize = Dimension(352,320)
-
-        App()
-    }
-    IntUiTheme(
-        theme = JewelTheme.lightThemeDefinition(),
-        styling = ComponentStyling.default()
-            .decoratedWindow(
-                titleBarStyle = TitleBarStyle.light(
-                    colors = TitleBarColors.lightWithLightHeader(backgroundColor = BLUEF9)
-                )
-            ),
-    ) {
-        MordecaiXTheme {
-            DecoratedWindow(
-                onCloseRequest = ::exitApplication,
-                title = "MordecaiX",
-                enabled = true,
-                visible = true,
-                icon = BitmapPainter(useResource("favicon.ico") {
-                    it.readBytes().decodeToImageBitmap()
-                })
-            ) {
-                window.minimumSize = Dimension(352, 320)
-                DesktopTitleBar()
-                DesktopApp()
+    runCatching {
+        IntUiTheme(
+            theme = JewelTheme.lightThemeDefinition(),
+            styling = ComponentStyling.default()
+                .decoratedWindow(
+                    titleBarStyle = TitleBarStyle.light(
+                        colors = TitleBarColors.lightWithLightHeader(backgroundColor = BLUEF9)
+                    )
+                ),
+        ) {
+            MordecaiXTheme {
+                DecoratedWindow(
+                    onCloseRequest = ::exitApplication,
+                    title = "MordecaiX",
+                    enabled = true,
+                    visible = true,
+                ) {
+                    window.minimumSize = Dimension(352, 320)
+//                DesktopApp()
+                }
             }
+        }
+    }.onFailure {
+        Window(onCloseRequest = ::exitApplication) {
+            Text(it.stackTraceToString())
         }
     }
 }

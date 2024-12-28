@@ -48,6 +48,8 @@ kstore = "0.9.1"
 browser = "0.3"
 flatlaf = "3.5.2"
 
+jna = "5.14.0"
+
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -128,6 +130,8 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
 compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlinx-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+
+jna-core = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 
 # for common
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
