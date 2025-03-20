@@ -33,10 +33,10 @@ import com.crow.mordecaix.common.Platform
 import com.crow.mordecaix.common.getString
 import com.crow.mordecaix.common.platform
 import com.crow.mordecaix.common.setString
+import com.crow.mordecaix.desktop.composeapp.generated.resources.Res
+import com.crow.mordecaix.desktop.composeapp.generated.resources.history
 import com.crow.mordecaix.extensions.measureTimeNotnull
 import com.crow.mordecaix.ui.component.RippleRoundedFillBox
-import mordecaix.composeapp.generated.resources.Res
-import mordecaix.composeapp.generated.resources.history
 import org.jetbrains.compose.resources.stringResource
 
 val items = listOf(MordecaiXScreen.HistoryScreen, MordecaiXScreen.DiscoverScreen, MordecaiXScreen.BookshelfScreen, MordecaiXScreen.SettingScreen)

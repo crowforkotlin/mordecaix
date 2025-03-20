@@ -47,7 +47,10 @@ kstore = "0.9.1"
 
 browser = "0.3"
 flatlaf = "3.5.2"
-
+kabel = "0.35.0"
+kottie = "2.0.1"
+moko = "0.18.1"
+sonner = "0.3.8"
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -138,6 +141,18 @@ kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" 
 # for jsBrowser and wasmJsBrowser
 kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
 
+# bluetooth for compose multiplatform
+kable-core = { module = "com.juul.kable:kable-core", version.ref = "kabel" }
+
+# lottie for compose multiplatform
+kottie = { module = "io.github.ismai117:kottie", version.ref = "kottie" }
+
+# Moko permission
+moko = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
+moko-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko" }
+
+# toast
+sonner = { module = "io.github.dokar3:sonner", version.ref = "sonner" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
