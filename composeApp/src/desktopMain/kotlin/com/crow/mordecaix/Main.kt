@@ -26,18 +26,11 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.useResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.window.Window
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import com.crow.mordecaix.common.getAppDatabase
@@ -58,15 +51,7 @@ import org.jetbrains.jewel.window.DecoratedWindowScope
 import org.jetbrains.jewel.window.TitleBar
 import org.jetbrains.jewel.window.styling.TitleBarColors
 import org.jetbrains.jewel.window.styling.TitleBarStyle
-import java.awt.Component
 import java.awt.Dimension
-import java.awt.Graphics
-import java.awt.Insets
-import javax.swing.JFrame
-import javax.swing.JMenuBar
-import javax.swing.JTextPane
-import javax.swing.border.Border
-import javax.swing.plaf.MenuBarUI
 
 @OptIn(ExperimentalResourceApi::class)
 fun main() = application {
@@ -97,82 +82,83 @@ fun main() = application {
             }
         }
     }
-    @Composable
-    fun LazyColumnWithConstrainedBar() {
-        var selectedIndex by remember { mutableStateOf(0) }
+}
+@Composable
+fun LazyColumnWithConstrainedBar() {
+    var selectedIndex by remember { mutableStateOf(0) }
 
-        // 动态存储每个 Item 的 Y 偏移量
-        val itemOffsets = remember { mutableStateMapOf<Int, Float>() }
+    // 动态存储每个 Item 的 Y 偏移量
+    val itemOffsets = remember { mutableStateMapOf<Int, Float>() }
 
-        // 滚动状态
-        val listState = rememberLazyListState()
-        LaunchedEffect(listState.layoutInfo) {
-            // 获取所有项的偏移量信息
-            listState.layoutInfo.visibleItemsInfo.forEach { itemInfo ->
-                val itemIndex = itemInfo.index
-                val itemOffset = itemInfo.offset
+    // 滚动状态
+    val listState = rememberLazyListState()
+    LaunchedEffect(listState.layoutInfo) {
+        // 获取所有项的偏移量信息
+        listState.layoutInfo.visibleItemsInfo.forEach { itemInfo ->
+            val itemIndex = itemInfo.index
+            val itemOffset = itemInfo.offset
 
-                // 如果是目标项，可以计算相对于第一个项（index = 0）的偏移量
-                if (itemIndex > 0) {
-                    var relativeOffset = itemOffset
-                    // 累加前面所有项的高度，直到目标项
-                    for (i in 0 until itemIndex) {
-                        listState.layoutInfo.visibleItemsInfo.find { it.index == i }?.let {
-                            relativeOffset += it.offset
-                        }
+            // 如果是目标项，可以计算相对于第一个项（index = 0）的偏移量
+            if (itemIndex > 0) {
+                var relativeOffset = itemOffset
+                // 累加前面所有项的高度，直到目标项
+                for (i in 0 until itemIndex) {
+                    listState.layoutInfo.visibleItemsInfo.find { it.index == i }?.let {
+                        relativeOffset += it.offset
                     }
-                    println("Offset of item $itemIndex relative to item 0: $relativeOffset")
                 }
-            }
-        }
-    // 蓝条的 Y 偏移量
-    val barOffsetY by animateDpAsState(
-        targetValue = run {
-            val itemOffset = itemOffsets[selectedIndex] ?: 0f
-            val columnOffset = listState.layoutInfo.viewportStartOffset.toFloat()
-            val constrainedOffset = itemOffset.coerceIn(columnOffset, columnOffset + listState.layoutInfo.viewportEndOffset)
-            constrainedOffset.dp
-        },
-        animationSpec = tween(
-            durationMillis = 100,
-            easing = LinearEasing
-        ),
-    )
-
-
-
-    val items = List(20) { "Item $it" }
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        // 蓝条
-        Box(
-            modifier = Modifier
-                .width(5.dp)
-                .height(50.dp) // 蓝条高度可以动态调整
-                .offset(y = barOffsetY)
-                .background(Color.Blue)
-        )
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState // 绑定滚动状态
-        ) {
-            itemsIndexed(items) { index, item ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(10.dp)
-                        .clickable { selectedIndex = index }
-                ) {
-                    Text(
-                        text = item,
-                        modifier = Modifier.padding(10.dp)
-                    )
-                }
+                println("Offset of item $itemIndex relative to item 0: $relativeOffset")
             }
         }
     }
+// 蓝条的 Y 偏移量
+val barOffsetY by animateDpAsState(
+    targetValue = run {
+        val itemOffset = itemOffsets[selectedIndex] ?: 0f
+        val columnOffset = listState.layoutInfo.viewportStartOffset.toFloat()
+        val constrainedOffset = itemOffset.coerceIn(columnOffset, columnOffset + listState.layoutInfo.viewportEndOffset)
+        constrainedOffset.dp
+    },
+    animationSpec = tween(
+        durationMillis = 100,
+        easing = LinearEasing
+    ),
+)
+
+
+
+val items = List(20) { "Item $it" }
+
+Box(modifier = Modifier.fillMaxSize()) {
+    // 蓝条
+    Box(
+        modifier = Modifier
+            .width(5.dp)
+            .height(50.dp) // 蓝条高度可以动态调整
+            .offset(y = barOffsetY)
+            .background(Color.Blue)
+    )
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState // 绑定滚动状态
+    ) {
+        itemsIndexed(items) { index, item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(10.dp)
+                    .clickable { selectedIndex = index }
+            ) {
+                Text(
+                    text = item,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+        }
+    }
+}
 }
 
 

@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 
-import io.github.fourlastor.construo.Target
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -256,7 +255,7 @@ compose.desktop {
                 "java.net.http",
             )
             appResourcesRootDir = layout.projectDirectory.dir("src/desktopMain/assets")
-            targetFormats(º
+            targetFormats(
                 TargetFormat.Dmg,
                 TargetFormat.Msi,
                 TargetFormat.Deb,
