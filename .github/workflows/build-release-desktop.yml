@@ -2,8 +2,12 @@ name: Build and Release Compose Desktop App with JetBrains JDK
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main  # 仅当推送到 main 分支时触发
+  pull_request:
+    types: [ closed ]  # 检测 PR 合并事件
+    branches:
+      - main  # 仅当 PR 合并到 main 分支时触发
 
 jobs:
   build:
