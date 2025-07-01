@@ -111,54 +111,54 @@ fun LazyColumnWithConstrainedBar() {
             }
         }
     }
-// 蓝条的 Y 偏移量
-val barOffsetY by animateDpAsState(
-    targetValue = run {
-        val itemOffset = itemOffsets[selectedIndex] ?: 0f
-        val columnOffset = listState.layoutInfo.viewportStartOffset.toFloat()
-        val constrainedOffset = itemOffset.coerceIn(columnOffset, columnOffset + listState.layoutInfo.viewportEndOffset)
-        constrainedOffset.dp
-    },
-    animationSpec = tween(
-        durationMillis = 100,
-        easing = LinearEasing
-    ),
-)
-
-
-
-val items = List(20) { "Item $it" }
-
-Box(modifier = Modifier.fillMaxSize()) {
-    // 蓝条
-    Box(
-        modifier = Modifier
-            .width(5.dp)
-            .height(50.dp) // 蓝条高度可以动态调整
-            .offset(y = barOffsetY)
-            .background(Color.Blue)
+    // 蓝条的 Y 偏移量
+    val barOffsetY by animateDpAsState(
+        targetValue = run {
+            val itemOffset = itemOffsets[selectedIndex] ?: 0f
+            val columnOffset = listState.layoutInfo.viewportStartOffset.toFloat()
+            val constrainedOffset = itemOffset.coerceIn(columnOffset, columnOffset + listState.layoutInfo.viewportEndOffset)
+            constrainedOffset.dp
+        },
+        animationSpec = tween(
+            durationMillis = 100,
+            easing = LinearEasing
+        ),
     )
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        state = listState // 绑定滚动状态
-    ) {
-        itemsIndexed(items) { index, item ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(10.dp)
-                    .clickable { selectedIndex = index }
-            ) {
-                Text(
-                    text = item,
-                    modifier = Modifier.padding(10.dp)
-                )
+
+
+    val items = List(20) { "Item $it" }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // 蓝条
+        Box(
+            modifier = Modifier
+                .width(5.dp)
+                .height(50.dp) // 蓝条高度可以动态调整
+                .offset(y = barOffsetY)
+                .background(Color.Blue)
+        )
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = listState // 绑定滚动状态
+        ) {
+            itemsIndexed(items) { index, item ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(10.dp)
+                        .clickable { selectedIndex = index }
+                ) {
+                    Text(
+                        text = item,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
             }
         }
     }
-}
 }
 
 

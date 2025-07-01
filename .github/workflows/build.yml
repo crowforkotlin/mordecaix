@@ -1,18 +1,18 @@
 #name: Build & Ship
 #
-#on:
-#  push:
-#    branches:
-#      - main  # 仅当推送到 main 分支时触发
+on:
+  push:
+    branches:
+      - dev  # 仅当推送到 main 分支时触发
 #  pull_request:
 #    types: [ closed ]  # 检测 PR 合并事件
 #    branches:
 #      - main  # 仅当 PR 合并到 main 分支时触发
 #
-#env:
-#  APP_NAME: mordecaix
+env:
+  APP_NAME: mordecaix
 #
-#jobs:
+jobs:
 #  read-properties:
 #    runs-on: ubuntu-latest
 #    outputs: # 定义 job 的输出
@@ -103,62 +103,62 @@
 #          target-branch: wasmJs
 #
 #
-##  windows-desktop-build:
-##    needs: read-properties
-##    runs-on: windows-latest
-##    timeout-minutes: 45 # 设置超时时间为 45 分钟
-##    steps:
-##      - uses: actions/checkout@v4
-##      - name: print
-##        run: |
-##          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe"
-##      - name: Download and Extract JBR
-##        run: |
-##          mkdir -p C:\jbr
-##          curl -L -o C:\jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-windows-x64-b1312.2.tar.gz
-##      - name: Configure JAVA_HOME
-##        uses: actions/setup-java@v4
-##        with:
-##          distribution: 'jdkfile'
-##          jdkFile: C:\jbr.tar.gz
-##          java-version: '17.0.11'
-##          cache: 'gradle'
-##          cache-dependency-path: | # regex to match all sub-projects
-##            **/*.gradle*
-##            **/gradle-wrapper.properties
-##      - name: Build Windows Debug App
-##        run: |
-##          .\gradlew packageUberJarForCurrentOS
-##          .\gradlew createDistributable
-##          .\gradlew packageExe
-##      - name: Archive Windows Debug App Installer Artifacts
-##        uses: actions/upload-artifact@v4
-##        with:
-##          name: Windows Debug App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-##          if-no-files-found: ignore
-##          path: composeApp/build/compose/binaries/main/exe/
-##      - name: Archive Windows Debug Artifacts
-##        uses: actions/upload-artifact@v4
-##        with:
-##          name: Windows Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-##          if-no-files-found: ignore
-##          path: composeApp/build/compose/binaries/main/app
-##      - name: Build Windows Release App
-##        run: |
-##          .\gradlew createReleaseDistributable
-##          .\gradlew packageReleaseExe
-##      - name: Archive Windows Release App Installer Artifacts
-##        uses: actions/upload-artifact@v4
-##        with:
-##          name: Windows Release App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-##          if-no-files-found: ignore
-##          path: composeApp/build/compose/binaries/main-release/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
-##      - name: Archive Windows Release App Artifacts
-##        uses: actions/upload-artifact@v4
-##        with:
-##          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
-##          if-no-files-found: ignore
-##          path: composeApp/build/compose/binaries/main-release/app
+  windows-desktop-build:
+    needs: read-properties
+    runs-on: self-hosted
+    timeout-minutes: 45 # 设置超时时间为 45 分钟
+    steps:
+      - uses: actions/checkout@v4
+      - name: print
+        run: |
+          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe"
+      - name: Download and Extract JBR
+        run: |
+          mkdir -p C:\jbr
+          curl -L -o C:\jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-17.0.11-windows-x64-b1312.2.tar.gz
+      - name: Configure JAVA_HOME
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'jdkfile'
+          jdkFile: C:\jbr.tar.gz
+          java-version: '17.0.11'
+          cache: 'gradle'
+          cache-dependency-path: | # regex to match all sub-projects
+            **/*.gradle*
+            **/gradle-wrapper.properties
+      - name: Build Windows Debug App
+        run: |
+          .\gradlew packageUberJarForCurrentOS
+          .\gradlew createDistributable
+          .\gradlew packageExe
+      - name: Archive Windows Debug App Installer Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Debug App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main/exe/
+      - name: Archive Windows Debug Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Debug App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main/app
+      - name: Build Windows Release App
+        run: |
+          .\gradlew createReleaseDistributable
+          .\gradlew packageReleaseExe
+      - name: Archive Windows Release App Installer Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Release App Installer - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release/exe/${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}.exe
+      - name: Archive Windows Release App Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
+          if-no-files-found: ignore
+          path: composeApp/build/compose/binaries/main-release/app
 ##
 ##
 ##  ubuntu-desktop-build:

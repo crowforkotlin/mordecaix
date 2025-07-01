@@ -69,6 +69,7 @@ kotlin {
 
     wasmJs {
         moduleName = "ComposeApp"
+        useCommonJs()
         browser {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
@@ -84,6 +85,7 @@ kotlin {
 
     js {
         moduleName = "ComposeApp"
+        useCommonJs()
         browser {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
@@ -113,12 +115,21 @@ kotlin {
         val nonAndroidMain by getting
         val jsCommonMain by getting
         val wasmJsMain by getting
-        wasmJsMain.dependencies { implementation(libs.jetbrains.browser) }
+        val jsMain by getting
+        jsMain.dependencies {
+            implementation(npm("is-sorted", "1.0.5"))
+            implementation(libs.kotlin.stdlib.js)
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.jetbrains.browser)
+        }
         jsCommonMain.dependencies {  }
         androidMain.dependencies {
             implementation(compose.preview)
+//            implementation(libs.androidx.javascript.engine)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.kotlinx.coroutines.guava)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
         }
@@ -197,12 +208,26 @@ android {
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
+    @Suppress("UnstableApiUsage")
     defaultConfig {
         applicationId = "com.crow.mordecaix"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = properties["version.name.app"].toString()
+        externalNativeBuild {
+            cmake {
+                cppFlags("-std=c++17")
+                abiFilters("arm64-v8a")
+            }
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path = file("src/androidMain/cpp/CMakeLists.txt")
+            version = "3.22.1"
+            ndkVersion = "23.1.7779620"
+        }
     }
     packaging {
         resources {
