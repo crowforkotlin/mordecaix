@@ -13,21 +13,21 @@ env:
   APP_NAME: mordecaix
 #
 jobs:
-#  read-properties:
-#    runs-on: ubuntu-latest
-#    outputs: # 定义 job 的输出
-#      version_name_desktop: ${{ steps.properties.outputs.version-name-desktop }}
-#      version_name_app: ${{ steps.properties.outputs.version-name-app }}
-#      version_name_web: ${{ steps.properties.outputs.version-name-web }}
-#    steps:
-#      - name: Checkout Repository
-#        uses: actions/checkout@v4
-#      - name: Read Properties File
-#        id: 'properties'
-#        uses: christian-draeger/read-properties@1.1.1
-#        with:
-#          path: './gradle.properties'
-#          properties: 'version.name.desktop version.name.app version.name.web'
+  read-properties:
+    runs-on: self-hosted
+    outputs: # 定义 job 的输出
+      version_name_desktop: ${{ steps.properties.outputs.version-name-desktop }}
+      version_name_app: ${{ steps.properties.outputs.version-name-app }}
+      version_name_web: ${{ steps.properties.outputs.version-name-web }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Read Properties File
+        id: 'properties'
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: './gradle.properties'
+          properties: 'version.name.desktop version.name.app version.name.web'
 #
 #
 #  web-build:
