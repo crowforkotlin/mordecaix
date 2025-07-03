@@ -16,19 +16,33 @@ jobs:
   read-properties:
     runs-on: self-hosted
     outputs: # 定义 job 的输出
-      version_name_desktop: ${{ steps.read_property.outputs.version-name-desktop }}
-      version_name_app: ${{ steps.read_property.outputs.version-name-app }}
-      version_name_web: ${{ steps.read_property.outputs.version-name-web }}
+      version_name_desktop: ${{ steps.read_desktop.outputs.version-name-desktop }}
+      version_name_app: ${{ steps.read_app.outputs.version-name-app }}
+      version_name_web: ${{ steps.read_web.outputs.version-name-web }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Read value from Properties-file
-        id: read_property
+      - name: Read desktop version
+        id: read_desktop
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
-          property: ['version.name.desktop', 'version.name.app', 'version.name.web']
+          property: 'version.name.desktop'
+
+      - name: Read app version
+        id: read_app
+        uses: Reedyuk/read-properties@v1.0.1
+        with:
+          path: './gradle.properties'
+          property: 'version.name.app'
+
+      - name: Read web version
+        id: read_web
+        uses: Reedyuk/read-properties@v1.0.1
+        with:
+          path: './gradle.properties'
+          property: 'version.name.web'
 
 #      - name: Read Properties File
 #        id: 'properties'
@@ -111,7 +125,7 @@ jobs:
 #
 #
   windows-desktop-build:
-    needs: read-properties
+    needs: [read-desktop, read-app, read-web]
     runs-on: self-hosted
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
