@@ -133,7 +133,7 @@ jobs:
     steps:
       - name: print
         run: |
-          ls
+          pwd
 
 #      - name: Configure JAVA_HOME
 #        uses: actions/setup-java@v4
