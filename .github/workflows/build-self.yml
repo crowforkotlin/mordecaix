@@ -131,12 +131,11 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
+      - uses: actions/checkout@v4
       - name: print
         run: |
           pwd
-          mkdir 123
           ls
-
 #      - name: Configure JAVA_HOME
 #        uses: actions/setup-java@v4
 #        with:
