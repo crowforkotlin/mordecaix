@@ -15,6 +15,9 @@ env:
 jobs:
   read-properties:
     runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash
     outputs: # 定义 job 的输出
       version_name_desktop: ${{ steps.read_desktop.outputs.version.name.desktop }}
       version_name_app: ${{ steps.read_app.outputs.version.name.app }}
@@ -29,7 +32,6 @@ jobs:
         with:
           path: './gradle.properties'
           property: 'version.name.desktop'
-        shell: bash
 
       - name: Read app version
         id: read_app
@@ -37,7 +39,6 @@ jobs:
         with:
           path: './gradle.properties'
           property: 'version.name.app'
-        shell: bash
 
       - name: Read web version
         id: read_web
@@ -45,7 +46,6 @@ jobs:
         with:
           path: './gradle.properties'
           property: 'version.name.web'
-        shell: bash
 
   #      - name: Read Properties File
   #        id: 'properties'
