@@ -24,21 +24,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read desktop version
-        id: read-desktop
+        id: read_desktop
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
           property: 'version.name.desktop'
 
       - name: Read app version
-        id: read-app
+        id: read_app
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
           property: 'version.name.app'
 
       - name: Read web version
-        id: read-web
+        id: read_web
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
@@ -125,7 +125,7 @@ jobs:
 #
 #
   windows-desktop-build:
-    needs: [read-desktop, read-app, read-web]
+    needs: read-properties
     runs-on: self-hosted
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
