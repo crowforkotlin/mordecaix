@@ -16,18 +16,25 @@ jobs:
   read-properties:
     runs-on: self-hosted
     outputs: # 定义 job 的输出
-      version_name_desktop: ${{ steps.properties.outputs.version-name-desktop }}
-      version_name_app: ${{ steps.properties.outputs.version-name-app }}
-      version_name_web: ${{ steps.properties.outputs.version-name-web }}
+      version_name_desktop: ${{ steps.read_property.outputs.version-name-desktop }}
+      version_name_app: ${{ steps.read_property.outputs.version-name-app }}
+      version_name_web: ${{ steps.read_property.outputs.version-name-web }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Read Properties File
-        id: 'properties'
-        uses: christian-draeger/read-properties@1.1.1
+
+      - name: Read value from Properties-file
+        id: read_property
+        uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
-          properties: 'version.name.desktop version.name.app version.name.web'
+          property: 'version.name.desktop version.name.app version.name.web'
+
+#      - name: Read Properties File
+#        id: 'properties'
+#        uses: christian-draeger/read-properties@1.1.1
+#        with:
+#          path: './gradle.properties'
 #
 #
 #  web-build:
