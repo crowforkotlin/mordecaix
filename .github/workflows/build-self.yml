@@ -13,36 +13,36 @@ env:
   APP_NAME: mordecaix
 #
 jobs:
-  read-properties:
-    runs-on: self-hosted
-    outputs: # 定义 job 的输出
-      version_name_desktop: ${{ steps.read_desktop.outputs.version-name-desktop }}
-      version_name_app: ${{ steps.read_app.outputs.version-name-app }}
-      version_name_web: ${{ steps.read_web.outputs.version-name-web }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Read desktop version
-        id: read_desktop
-        uses: Reedyuk/read-properties@v1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'version.name.desktop'
-
-      - name: Read app version
-        id: read_app
-        uses: Reedyuk/read-properties@v1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'version.name.app'
-
-      - name: Read web version
-        id: read_web
-        uses: Reedyuk/read-properties@v1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'version.name.web'
+#  read-properties:
+#    runs-on: self-hosted
+#    outputs: # 定义 job 的输出
+#      version_name_desktop: ${{ steps.read_desktop.outputs.version-name-desktop }}
+#      version_name_app: ${{ steps.read_app.outputs.version-name-app }}
+#      version_name_web: ${{ steps.read_web.outputs.version-name-web }}
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v4
+#
+#      - name: Read desktop version
+#        id: read_desktop
+#        uses: Reedyuk/read-properties@v1.0.1
+#        with:
+#          path: './gradle.properties'
+#          property: 'version.name.desktop'
+#
+#      - name: Read app version
+#        id: read_app
+#        uses: Reedyuk/read-properties@v1.0.1
+#        with:
+#          path: './gradle.properties'
+#          property: 'version.name.app'
+#
+#      - name: Read web version
+#        id: read_web
+#        uses: Reedyuk/read-properties@v1.0.1
+#        with:
+#          path: './gradle.properties'
+#          property: 'version.name.web'
   #
   #
 
@@ -127,18 +127,28 @@ jobs:
   #
   #
   windows-desktop-build:
-    needs: read-properties
+#    needs: read-properties
     runs-on: self-hosted
     timeout-minutes: 45 # 设置超时时间为 45 分钟
     steps:
       - name: print
         run: |
-          echo "Windows Release App - ${{ env.APP_NAME }}${{ needs.read-properties.outputs.version_name_desktop }}.exe"
-      - name: Build with custom JDK (不修改全局JAVA_HOME)
-        run: |
-          gradlew packageUberJarForCurrentOS --java-home "D:\program\jbr_jcef-17.0.11-windows-x64-b1312.2\bin"
-          gradlew createDistributable --java-home "D:\program\jbr_jcef-17.0.11-windows-x64-b1312.2\bin"
-          gradlew packageExe --java-home "D:\program\jbr_jcef-17.0.11-windows-x64-b1312.2\bin"
+          ls
+#      - name: Configure JAVA_HOME
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: 'jdkfile'
+#          jdkFile: C:\jbr.tar.gz
+#          java-version: '17.0.11'
+#          cache: 'gradle'
+#          cache-dependency-path: | # regex to match all sub-projects
+#            **/*.gradle*
+#            **/gradle-wrapper.properties
+#      - name: Build Windows Debug App
+#        run: |
+#          .\gradlew packageUberJarForCurrentOS
+#          .\gradlew createDistributable
+#          .\gradlew packageExe
 #      - name: Archive Windows Debug App Installer Artifacts
 #        uses: actions/upload-artifact@v4
 #        with:
@@ -167,6 +177,10 @@ jobs:
 #          name: Windows Release App - ${{ env.APP_NAME }}-${{ needs.read-properties.outputs.version_name_desktop }}
 #          if-no-files-found: ignore
 #          path: composeApp/build/compose/binaries/main-release/app
+
+
+
+
 ##
 ##
 ##  ubuntu-desktop-build:
