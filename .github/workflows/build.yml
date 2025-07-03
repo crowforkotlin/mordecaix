@@ -28,7 +28,7 @@ jobs:
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
-          property: 'version.name.desktop version.name.app version.name.web'
+          property: 'version.name.desktop', 'version.name.app', 'version.name.web'
 
 #      - name: Read Properties File
 #        id: 'properties'
