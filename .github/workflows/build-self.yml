@@ -134,6 +134,8 @@ jobs:
       - name: print
         run: |
           pwd
+          mkdir 123
+          ls
 
 #      - name: Configure JAVA_HOME
 #        uses: actions/setup-java@v4
