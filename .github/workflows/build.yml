@@ -24,21 +24,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read desktop version
-        id: read_desktop
+        id: read-desktop
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
           property: 'version.name.desktop'
 
       - name: Read app version
-        id: read_app
+        id: read-app
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
           property: 'version.name.app'
 
       - name: Read web version
-        id: read_web
+        id: read-web
         uses: Reedyuk/read-properties@v1.0.1
         with:
           path: './gradle.properties'
