@@ -16,114 +16,125 @@ jobs:
   read-properties:
     runs-on: self-hosted
     outputs: # 定义 job 的输出
-      version_name_desktop: ${{ steps.read_desktop.outputs.version.name.desktop }}
-      version_name_app: ${{ steps.read_app.outputs.version.name.app }}
-      version_name_web: ${{ steps.read_web.outputs.version.name.web }}
+      version_name_desktop: ${{ steps.all.outputs.version.name.desktop }}
+      version_name_app: ${{ steps.all.outputs.version.name.app }}
+      version_name_web: ${{ steps.all.outputs.version.name.web }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Read desktop version
-        id: read_desktop
-        uses: Reedyuk/read-properties@v1.0.1
+      - name: Read properties
+        id: all
+        uses: madhead/read-java-properties@latest
         with:
-          path: './gradle.properties'
-          property: 'version.name.desktop'
+          file: ./gradle.properties
+          all: true
 
-      - name: Read app version
-        id: read_app
-        uses: Reedyuk/read-properties@v1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'version.name.app'
+  #
+  #      - name: Read desktop version
+  #        id: read_desktop
+  #        uses: Reedyuk/read-properties@v1.0.1
+  #        with:
+  #          path: './gradle.properties'
+  #          property: 'version.name.desktop'
+  #        shell: bash
+  #
+  #      - name: Read app version
+  #        id: read_app
+  #        uses: Reedyuk/read-properties@v1.0.1
+  #        with:
+  #          path: './gradle.properties'
+  #          property: 'version.name.app'
+  #        shell: bash
+  #
+  #      - name: Read web version
+  #        id: read_web
+  #        uses: Reedyuk/read-properties@v1.0.1
+  #        with:
+  #          path: './gradle.properties'
+  #          property: 'version.name.web'
+  #        shell: bash
 
-      - name: Read web version
-        id: read_web
-        uses: Reedyuk/read-properties@v1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'version.name.web'
-
-#      - name: Read Properties File
-#        id: 'properties'
-#        uses: christian-draeger/read-properties@1.1.1
-#        with:
-#          path: './gradle.properties'
-#
-#
-#  web-build:
-#    needs: read-properties
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 45 # Set the timeout of 45 minutes for this job
-#    steps:
-#      - uses: actions/checkout@v4  # Use checkout to support cloning local projects to runner environment
-#      - name: Set up Java
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: 'zulu' # Use Zulu provide jdk
-#          java-version: 17
-#          cache: 'gradle'
-#          cache-dependency-path: | # regex to match all sub-projects
-#            **/*.gradle*
-#            **/gradle-wrapper.properties
-#
-#      - name: Build web js app
-#        uses: nick-fields/retry@v3
-#        with:
-#          timeout_minutes: 20
-#          max_attempts: 2
-#          command: ./gradlew :composeApp:JsBrowserDistribution
-#
-#      - name: Push WebAssembly build output to another repository
-#        uses: cpina/github-action-push-to-another-repository@v1.7.2
-#        env:
-#          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
-#        with:
-#          source-directory: composeApp/build/dist/js/productionExecutable
-#          destination-github-username: 'crowforkotlin'
-#          destination-repository-name: 'mordecaix-pages-js'
-#          user-email: crowforkotlin@gmail.com
-#          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
-#          create-target-branch-if-needed: true
-#          target-branch: js
-#
-#
-#  wasm-build:
-#    needs: read-properties
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 45
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Set up Java
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: 'zulu'
-#          java-version: 17
-#          cache: 'gradle'
-#          cache-dependency-path: | # regex to match all sub-projects
-#            **/*.gradle*
-#            **/gradle-wrapper.properties
-#
-#      - name: Build wasm app
-#        uses: nick-fields/retry@v3
-#        with:
-#          timeout_minutes: 20
-#          max_attempts: 2
-#          command: ./gradlew :composeApp:wasmJsBrowserDistribution
-#      - name: Push WebAssembly build output to another repository
-#        uses: cpina/github-action-push-to-another-repository@v1.7.2
-#        env:
-#          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
-#        with:
-#          source-directory: composeApp/build/dist/wasmJs/productionExecutable
-#          destination-github-username: 'crowforkotlin'
-#          destination-repository-name: 'mordecaix-pages-wasmjs'
-#          user-email: crowforkotlin@gmail.com
-#          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
-#          create-target-branch-if-needed: true
-#          target-branch: wasmJs
-#
-#
+  #      - name: Read Properties File
+  #        id: 'properties'
+  #        uses: christian-draeger/read-properties@1.1.1
+  #        with:
+  #          path: './gradle.properties'
+  #
+  #
+  #  web-build:
+  #    needs: read-properties
+  #    runs-on: ubuntu-latest
+  #    timeout-minutes: 45 # Set the timeout of 45 minutes for this job
+  #    steps:
+  #      - uses: actions/checkout@v4  # Use checkout to support cloning local projects to runner environment
+  #      - name: Set up Java
+  #        uses: actions/setup-java@v4
+  #        with:
+  #          distribution: 'zulu' # Use Zulu provide jdk
+  #          java-version: 17
+  #          cache: 'gradle'
+  #          cache-dependency-path: | # regex to match all sub-projects
+  #            **/*.gradle*
+  #            **/gradle-wrapper.properties
+  #
+  #      - name: Build web js app
+  #        uses: nick-fields/retry@v3
+  #        with:
+  #          timeout_minutes: 20
+  #          max_attempts: 2
+  #          command: ./gradlew :composeApp:JsBrowserDistribution
+  #
+  #      - name: Push WebAssembly build output to another repository
+  #        uses: cpina/github-action-push-to-another-repository@v1.7.2
+  #        env:
+  #          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
+  #        with:
+  #          source-directory: composeApp/build/dist/js/productionExecutable
+  #          destination-github-username: 'crowforkotlin'
+  #          destination-repository-name: 'mordecaix-pages-js'
+  #          user-email: crowforkotlin@gmail.com
+  #          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+  #          create-target-branch-if-needed: true
+  #          target-branch: js
+  #
+  #
+  #  wasm-build:
+  #    needs: read-properties
+  #    runs-on: ubuntu-latest
+  #    timeout-minutes: 45
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - name: Set up Java
+  #        uses: actions/setup-java@v4
+  #        with:
+  #          distribution: 'zulu'
+  #          java-version: 17
+  #          cache: 'gradle'
+  #          cache-dependency-path: | # regex to match all sub-projects
+  #            **/*.gradle*
+  #            **/gradle-wrapper.properties
+  #
+  #      - name: Build wasm app
+  #        uses: nick-fields/retry@v3
+  #        with:
+  #          timeout_minutes: 20
+  #          max_attempts: 2
+  #          command: ./gradlew :composeApp:wasmJsBrowserDistribution
+  #      - name: Push WebAssembly build output to another repository
+  #        uses: cpina/github-action-push-to-another-repository@v1.7.2
+  #        env:
+  #          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
+  #        with:
+  #          source-directory: composeApp/build/dist/wasmJs/productionExecutable
+  #          destination-github-username: 'crowforkotlin'
+  #          destination-repository-name: 'mordecaix-pages-wasmjs'
+  #          user-email: crowforkotlin@gmail.com
+  #          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+  #          create-target-branch-if-needed: true
+  #          target-branch: wasmJs
+  #
+  #
   windows-desktop-build:
     needs: read-properties
     runs-on: self-hosted
