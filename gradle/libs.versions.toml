@@ -2,55 +2,85 @@
 
 
 [versions]
-agp = "8.2.2"
-android-compileSdk = "34"
+agp = "8.11.1"
+android-compileSdk = "36"
 android-minSdk = "23"
 android-targetSdk = "34"
-androidx-activityCompose = "1.9.3"
-androidx-appcompat = "1.7.0"
-androidx-constraintlayout = "2.2.0"
-androidx-core-ktx = "1.15.0"
+androidx-activityCompose = "1.10.1"
+androidx-appcompat = "1.7.1"
+androidx-constraintlayout = "2.2.1"
+androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
-androidx-lifecycle = "2.8.4"
+androidx-lifecycle = "2.9.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
-androidx-datastore = "1.1.1"
-androidx-javascript = "1.0.0-rc01"
+androidx-datastore = "1.1.7"
 
-skiko = "0.8.18"    # sync with jetbrains-compose
-compose-plugin = "1.7.1"
+
+skiko = "0.9.21"    # sync with jetbrains-compose
+compose-plugin = "1.8.3"
 junit = "4.13.2"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.27"
-kotlinpoet = "1.17.0"
-kotlinx-coroutines = "1.9.0"
-buildconfig = "5.3.5"
-kotlinxSerialization = "1.7.3"
-koin = "4.0.1-Beta1"
-ktor = "3.0.0"
-voyager = "1.1.0-beta02"
-androidx-room = "2.7.0-alpha11"
-androidx-sqlite = "2.5.0-alpha11"
+kotlin = "2.2.0"
+
+# https://github.com/google/ksp
+ksp = "2.2.0-2.0.2"
+
+# https://github.com/square/kotlinpoet
+kotlinpoet = "2.2.0"
+
+# https://github.com/square/kotlinpoet
+kotlinx-coroutines = "1.10.2"
+
+# https://github.com/gmazzo/gradle-buildconfig-plugin
+buildconfig = "5.6.7"
+
+# https://github.com/Kotlin/kotlinx.serialization
+kotlinxSerialization = "1.9.0"
+
+# https://github.com/InsertKoinIO/koin
+koin = "4.1.0"
+
+# https://github.com/ktorio/ktor
+ktor = "3.2.2"
+
+# https://github.com/adrielcafe/voyager
+voyager = "1.1.0-beta03"
+
+# https://developer.android.com/jetpack/androidx/releases/room
+androidx-room = "2.7.2"
+
+# https://developer.android.com/jetpack/androidx/releases/sqlite
+androidx-sqlite = "2.5.2"
 
 #collections [https://github.com/Kotlin/kotlinx.collections.immutable]
 kotlinx-collections = "0.3.8"
 
 # ktx-datetime - [https://github.com/Kotlin/kotlinx-datetime]
-kotlinxDatetime = "0.6.0"
+kotlinxDatetime = "0.7.1"
 
 # haze - [https://github.com/chrisbanes/haze]
-haze = "1.0.2"
+haze = "1.6.8"
 
-coil = "3.0.0-rc01"
+# https://github.com/coil-kt/coil
+coil = "3.2.0"
 
-# ks file io
-kstore = "0.9.1"
+# https://github.com/xxfast/KStore
+kstore = "1.0.0"
 
+# https://github.com/Kotlin/kotlinx-browser
 browser = "0.3"
-flatlaf = "3.5.2"
-kabel = "0.35.0"
+
+# https://github.com/JFormDesigner/FlatLaf
+flatlaf = "3.6.1"
+
+# https://github.com/JuulLabs/kable
+kabel = "0.38.0"
+
+# https://github.com/ismai117/kottie
 kottie = "2.0.1"
-moko = "0.18.1"
+
+# https://github.com/icerockdev/moko-permissions
+moko = "0.19.1"
 sonner = "0.3.8"
 [libraries]
 kotlin-stdlib-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
@@ -167,8 +197,18 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+# https://github.com/google/ksp
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+# https://developer.android.google.cn/jetpack/androidx/releases/room?hl=zh-cn
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
+
+# https://github.com/gmazzo/gradle-buildconfig-plugin
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
+
+# https://github.com/Kotlin/kotlinx.serialization
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# https://github.com/fourlastor-alexandria/construo
 github-fourlastor-construo = { id = "io.github.fourlastor.construo", version = "1.5.1" }
