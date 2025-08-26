@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MordecaiX</string>
+    <string name="main">Main</string>
+    <string name="setting">设置</string>
+    <string name="comic_info">漫画信息</string>
+    <string name="discover">浏览</string>
+    <string name="bookshelf">书架</string>
+    <string name="history">足迹</string>
+</resources>

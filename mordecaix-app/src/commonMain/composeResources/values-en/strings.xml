@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MordecaiX</string>
+    <string name="main">Main</string>
+    <string name="setting">Setting</string>
+    <string name="comic_info">ComicInfo</string>
+    <string name="source">Source</string>
+    <string name="history">History</string>
+</resources>
