@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.crow.mordecaix.extensions
 
 import androidx.compose.foundation.clickable
@@ -11,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import kotlinx.datetime.Clock
+import kotlin.time.ExperimentalTime
 
 val LocalDebounce = compositionLocalOf { 0L }
 
@@ -27,7 +30,7 @@ inline fun debounced(crossinline onClick: () -> Unit, debounceTime: Long = 1000L
     var lastTimeClicked by remember { mutableStateOf(0L) }
     val onClickLambda: () -> Unit = {
 
-        val now = Clock.System.now().toEpochMilliseconds()
+        val now = kotlin.time.Clock.System.now().toEpochMilliseconds()
         if (now - lastTimeClicked > debounceTime) {
             onClick()
         }
@@ -56,7 +59,7 @@ fun onDebounceClick(
 ): () -> Unit {
     var lastClickTimeMillis: Long by remember { mutableLongStateOf(value = 0L) }
     return {
-        Clock.System.now().toEpochMilliseconds().let { currentTimeMillis ->
+        kotlin.time.Clock.System.now().toEpochMilliseconds().let { currentTimeMillis ->
             if ((currentTimeMillis - lastClickTimeMillis) >= debounceTimeMillis) {
                 lastClickTimeMillis = currentTimeMillis
                 onClick()

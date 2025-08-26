@@ -50,9 +50,8 @@ class MainActivity : ComponentActivity() {
             window.navigationBarColor = Color.TRANSPARENT
         }
         setContent {
-//            App()
             MaterialTheme {
-                WasmFibApp()
+                App()
             }
         }
     }
@@ -90,39 +89,3 @@ class MainActivity : ComponentActivity() {
         return a
     }
 }
-
-
-@Composable
-fun WasmFibApp() {
-    val context = LocalContext.current
-    val nativeLib = remember { NativeLib(context) }
-    val coroutineScope = rememberCoroutineScope()
-    var resultText by remember { mutableStateOf("Press the button") }
-    val index = 1
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = resultText)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = {
-            resultText = "Running"
-            coroutineScope.launch(Dispatchers.IO) {
-                val startMs = System.currentTimeMillis()
-                val result = nativeLib.nativeWasmFib(nativeLib.fibonacciWasmImageBytes, index)
-                val endMs = System.currentTimeMillis()
-                val duration = endMs - startMs
-                withContext(Dispatchers.Main) { resultText = "fib($index) -> $result, $duration ms \t ${duration / 1000} s" }
-            }
-        }) {
-            Text("Run Fib")
-        }
-    }
-}
-
