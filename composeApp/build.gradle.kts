@@ -157,7 +157,7 @@ kotlin {
                 implementation(libs.jetbrains.lifecycle.viewmodel)
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.compose.material.window)
-                implementation(libs.jetbrains.compose.material.icons)
+                implementation(libs.jetbrains.compose.material.icons.core)
                 implementation(libs.jetbrains.compose.material3.adaptive)
                 implementation(libs.jetbrains.compose.material3.adaptive.layout)
                 implementation(libs.jetbrains.compose.material3.adaptive.navigation)
@@ -186,7 +186,7 @@ kotlin {
         }
         val nonAndroidMain by getting {
             dependencies {
-                implementation(libs.skiko)
+//                implementation(libs.skiko)
             }
         }
         val wasmJsMain by getting {
