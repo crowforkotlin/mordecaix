@@ -30,7 +30,7 @@ inline fun debounced(crossinline onClick: () -> Unit, debounceTime: Long = 1000L
     var lastTimeClicked by remember { mutableStateOf(0L) }
     val onClickLambda: () -> Unit = {
 
-        val now = kotlin.time.Clock.System.now().toEpochMilliseconds()
+        val now = Clock.System.now().toEpochMilliseconds()
         if (now - lastTimeClicked > debounceTime) {
             onClick()
         }
@@ -59,7 +59,7 @@ fun onDebounceClick(
 ): () -> Unit {
     var lastClickTimeMillis: Long by remember { mutableLongStateOf(value = 0L) }
     return {
-        kotlin.time.Clock.System.now().toEpochMilliseconds().let { currentTimeMillis ->
+        Clock.System.now().toEpochMilliseconds().let { currentTimeMillis ->
             if ((currentTimeMillis - lastClickTimeMillis) >= debounceTimeMillis) {
                 lastClickTimeMillis = currentTimeMillis
                 onClick()

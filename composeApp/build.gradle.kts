@@ -71,7 +71,7 @@ kotlin {
     androidTarget()
 
     wasmJs {
-        outputModuleName = "mordecaix"
+        moduleName = "mordecaix"
         browser {
             testTask {
                 enabled = false
@@ -89,7 +89,7 @@ kotlin {
     }
 
     js {
-        outputModuleName = "mordecaix"
+        moduleName = "mordecaix"
         browser {
             testTask {
                 enabled = false
@@ -196,8 +196,8 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation(npm("is-sorted", "1.0.5"))
-                implementation(libs.kotlin.stdlib.js)
+//                implementation(npm("is-sorted", "1.0.5"))
+//                implementation(libs.kotlin.stdlib.js)
             }
         }
         val jsCommonMain by getting
