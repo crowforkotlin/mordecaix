@@ -130,19 +130,8 @@ plugins {
     alias(libs.plugins.conveyor)
 }
 
-java {
-    toolchain {
-        vendor = JvmVendorSpec.JETBRAINS
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
 
 kotlin {
-
-    jvmToolchain {
-        vendor = JvmVendorSpec.JETBRAINS
-        languageVersion = JavaLanguageVersion.of(17)
-    }
 
     applyHierarchyTemplate(template = KotlinHierarchyTemplate {
         withSourceSetTree(tree = arrayOf(KotlinSourceSetTree.main, KotlinSourceSetTree.test))
@@ -209,8 +198,8 @@ compose.desktop {
     version = "1.0.0"
     application {
         mainClass = "com.crow.mordecaix.MainKt"
-//        javaHome = "/Users/crowforkotlin/Downloads/jbr_jcef-17.0.11-osx-aarch64-b1312.2/Contents/Home/"
-        javaHome = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home/"
+//        javaHome = "/Users/crowforkotlin/WuYa/Code/Tools/jbr_jcef-17.0.11-osx-aarch64-b1312.2/Contents/Home/"
+//        javaHome = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home/"
         buildTypes.release {
             proguard {
                 this.optimize = false
@@ -248,7 +237,6 @@ compose.desktop {
                 bundleID = "com.crow.mordecaix"
                 mainClass = "com.crow.mordecaix.MainKt"
                 appCategory = "public.app-category.developer-tools"
-                javaHome = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home/"
                 entitlementsFile.set(project.file("default.entitlements"))
             }
         }
