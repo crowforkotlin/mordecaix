@@ -62,7 +62,7 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
                                 setString("StartDestinationScreen", item)
                                 navController.navigate(item) {
                                     // 防止在相同目的地之间重复导航
-                                    popUpTo(navController.graph.startDestDisplayName) { saveState = true }
+                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
                                     // 避免重新创建以前的目标
                                     launchSingleTop = true
                                     // 恢复之前的导航状态
@@ -107,7 +107,7 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
                                         setString("StartDestinationScreen", item)
                                         navController.navigate(item) {
                                             // 防止在相同目的地之间重复导航
-                                            popUpTo(navController.graph.startDestDisplayName) { saveState = true }
+                                            popUpTo(navController.graph.startDestinationId) { saveState = true }
                                             // 避免重新创建以前的目标
                                             launchSingleTop = true
                                             // 恢复之前的导航状态
