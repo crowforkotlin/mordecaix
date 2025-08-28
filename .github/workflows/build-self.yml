@@ -1,18 +1,18 @@
 #name: Build & Ship
 #
-on:
-  push:
-    branches:
-      - dev  # 仅当推送到 main 分支时触发
+#on:
+#  push:
+#    branches:
+#      - dev  # 仅当推送到 main 分支时触发
 #  pull_request:
 #    types: [ closed ]  # 检测 PR 合并事件
 #    branches:
 #      - main  # 仅当 PR 合并到 main 分支时触发
 #
-env:
-  APP_NAME: mordecaix
+#env:
+#  APP_NAME: mordecaix
 #
-jobs:
+#jobs:
   checkout-project:
     runs-on: self-hosted
     steps:
@@ -140,15 +140,15 @@ jobs:
   #          target-branch: wasmJs
   #
   #
-  windows-desktop-build:
+#  windows-desktop-build:
 #    needs: read-properties
-    runs-on: self-hosted
-    timeout-minutes: 45 # 设置超时时间为 45 分钟
-    steps:
-      - name: print
-        run: |
-          pwd
-          ls
+#    runs-on: self-hosted
+#    timeout-minutes: 45 # 设置超时时间为 45 分钟
+#    steps:
+#      - name: print
+#        run: |
+#          pwd
+#          ls
 #      - name: Configure JAVA_HOME
 #        uses: actions/setup-java@v4
 #        with:
