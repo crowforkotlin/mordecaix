@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 @Suppress("UnusedVariable")
@@ -50,8 +49,8 @@ fun KotlinMultiplatformExtension.sourceSets() {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
 
-                implementation(libs.jetbrains.kotlinx.coroutines)
-                implementation(libs.jetbrains.kotlinx.collections)
+                implementation(libs.kotlinx.coroutines)
+                implementation(libs.kotlinx.collections)
                 implementation(libs.jetbrains.lifecycle.viewmodel)
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.compose.material.window)
@@ -121,14 +120,14 @@ fun KotlinHierarchyBuilder.nonWebCommon() {
 }
 
 plugins {
+    id("app.base.android")
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.github.fourlastor.construo)
-    id("dev.hydraulic.conveyor") version "1.12"
+    alias(libs.plugins.conveyor)
 }
 
 java {
@@ -203,61 +202,6 @@ kotlin {
     }
 
     sourceSets()
-}
-
-android {
-    namespace = "com.crow.mordecaix"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    sourceSets {
-        named("main") {
-            manifest.srcFile("src/androidMain/AndroidManifest.xml")
-            res.srcDirs("src/androidMain/res")
-            resources.srcDirs("src/commonMain/resources")
-        }
-    }
-    defaultConfig {
-        applicationId = "com.crow.mordecaix"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = properties["version.name.app"].toString()
-    }
-    packaging {
-        resources {
-            pickFirsts += arrayOf(
-                "META-INF/androidx.compose.ui_ui.version"
-            )
-            excludes += arrayOf(
-                "DebugProbesKt.bin",
-                "kotlin-tooling-metadata.json",
-                "kotlin/**",
-                "META-INF/*.version",
-                "META-INF/**/LICENSE.txt",
-                "/META-INF/{AL2.0,LGPL2.1}"
-            )
-        }
-        dex {
-            useLegacyPackaging = true
-        }
-        jniLibs {
-            useLegacyPackaging = true
-        }
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    buildFeatures {
-        compose = true
-    }
-    dependencies {
-        debugImplementation(libs.androidx.compose.ui.tooling)
-    }
 }
 
 compose.desktop {

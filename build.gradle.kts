@@ -7,6 +7,7 @@ plugins {
 
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.github.fourlastor.construo) apply false
+    alias(libs.plugins.conveyor) apply false
 }
 
 project.extra["pluginDataStoreInputDirPath"] = file("mordecaix-app/datastore").absolutePath

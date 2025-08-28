@@ -94,8 +94,11 @@ moko = "0.20.0"
 # https://github.com/dokar3/compose-sonner
 sonner = "0.3.8"
 
-# https://github.com/hydraulic-software/conveyor
-conveyor = "1.1"
+# [https://plugins.gradle.org/plugin/dev.hydraulic.conveyor] [https://github.com/hydraulic-software/conveyor]
+conveyor = "1.12"
+
+# https://mvnrepository.com/artifact/dev.hydraulic.conveyor/conveyor-control
+conveyor-control = "1.1"
 
 
 [libraries]
@@ -131,16 +134,16 @@ jetbrains-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", na
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 skiko = { module = "org.jetbrains.skiko:skiko", version.ref = "skiko" }
 
-jetbrains-kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-guava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines"}
 
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-ksp-gradlePlugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+
 kotlinpoet = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-jetbrains-kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections" }
+kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-wasm = { module = "io.insert-koin:koin-core-wasm-js", version.ref = "koin" }
@@ -181,10 +184,6 @@ flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 
-compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
-compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
-kotlinx-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
-
 # for common
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 
@@ -208,10 +207,14 @@ moko-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = 
 sonner = { module = "io.github.dokar3:sonner", version.ref = "sonner" }
 
 # mac package
-conveyor = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref= "conveyor" }
+conveyor = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref= "conveyor-control" }
 
-gradle-android-application = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-gradle-koltin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradle-ksp-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+gradle-compose-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
+gradle-compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+gradle-kotlinx-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+gradle-android-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+gradle-kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -230,3 +233,5 @@ buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 github-fourlastor-construo = { id = "io.github.fourlastor.construo", version.ref = "construo" }
+
+conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
