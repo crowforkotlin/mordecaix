@@ -3,7 +3,7 @@ name: Build and Release Compose Desktop App with JetBrains JDK
 on:
   push:
     tags:
-      - 'dev'
+      - dev
 
 jobs:
   build:
