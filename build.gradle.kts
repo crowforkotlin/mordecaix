@@ -1,17 +1,16 @@
 plugins {
-    // this is necessary to avoid the plugins to be loaded multiple times
-    // in each subproject's classloader
-    alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.androidLibrary) apply false
-    alias(libs.plugins.jetbrainsCompose) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
     alias(libs.plugins.compose.compiler) apply false
-    alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.github.fourlastor.construo) apply false
 }
 
-project.extra["pluginDataStoreInputDirPath"] = "D:\\fish\\MordecaiX\\composeApp\\datastore"
-project.extra["pluginDataStoreOutputDirPath"] = "${projectDir}\\datastore_temp"
+project.extra["pluginDataStoreInputDirPath"] = file("mordecaix-app/datastore").absolutePath
+project.extra["pluginDataStoreOutputDirPath"] = file("mordecaix-app/datastore-source").absolutePath
 
 apply(from = "gradle/plugin.datastore.gradle.kts")
 

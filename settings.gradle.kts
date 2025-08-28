@@ -1,4 +1,6 @@
-rootProject.name = "MordecaiX"
+@file:Suppress("UnstableApiUsage")
+
+rootProject.name = "mordecaix"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -12,7 +14,6 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-//        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -25,24 +26,13 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-//        gradlePluginPortal()
+        mavenCentral()
         maven("https://packages.jetbrains.team/maven/p/kpm/public/") {
             mavenContent {
-                includeGroupByRegex(".*java.*")
+                includeGroup("org.jetbrains.jewel")
             }
         }
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev") {
-            mavenContent {
-                includeGroupByRegex(".*java.*")
-            }
-        }
-        maven("https://packages.jetbrains.team/maven/p/kpm/public") {
-            mavenContent {
-                includeGroupAndSubgroups("org.jetbrains.jewel")
-            }
-        }
-        mavenCentral()
     }
 }
 
-include(":composeApp")
+include(":mordecaix-app")
