@@ -1217,6 +1217,11 @@ is-plain-object@^2.0.4:
   dependencies:
     isobject "^3.0.1"
 
+is-sorted@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/is-sorted/-/is-sorted-1.0.5.tgz#ded2e357010bc79350b10ec2768e27db1b92b128"
+  integrity sha512-KZJvKDrI+Kg3ixeDaZQIt7RIwcGnm07+NSipyj1r9MtjDrLG678ETy4yO6dBJLUjejPdge9fLCGxsWkQO/3PJg==
+
 is-wsl@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-3.1.0.tgz#e1c657e39c10090afcbedec61720f6b924c3cbd2"
