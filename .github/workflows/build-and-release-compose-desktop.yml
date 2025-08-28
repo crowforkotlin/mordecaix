@@ -2,8 +2,8 @@ name: Build and Release Compose Desktop App with JetBrains JDK
 
 on:
   push:
-    branches:
-      - dev
+    tags:
+      - 'v*'
 
 jobs:
   build:
