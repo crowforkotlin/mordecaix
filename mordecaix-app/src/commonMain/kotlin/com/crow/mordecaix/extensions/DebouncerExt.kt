@@ -59,7 +59,7 @@ fun onDebounceClick(
 ): () -> Unit {
     var lastClickTimeMillis: Long by remember { mutableLongStateOf(value = 0L) }
     return {
-        Clock.System.now().toEpochMilliseconds().let { currentTimeMillis ->
+        kotlin.time.Clock.System.now().toEpochMilliseconds().let { currentTimeMillis ->
             if ((currentTimeMillis - lastClickTimeMillis) >= debounceTimeMillis) {
                 lastClickTimeMillis = currentTimeMillis
                 onClick()

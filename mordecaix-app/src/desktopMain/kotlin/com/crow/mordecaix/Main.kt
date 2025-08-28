@@ -57,7 +57,7 @@ import java.awt.Dimension
 fun main() = application {
     initializeApplication()
     getAppDatabase()
-   /* IntUiTheme(
+    IntUiTheme(
         theme = JewelTheme.lightThemeDefinition(),
         styling = ComponentStyling.default()
             .decoratedWindow(
@@ -81,7 +81,7 @@ fun main() = application {
                 DesktopApp()
             }
         }
-    }*/
+    }
 }
 @Composable
 fun LazyColumnWithConstrainedBar() {

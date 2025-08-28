@@ -33,9 +33,9 @@ import com.crow.mordecaix.common.Platform
 import com.crow.mordecaix.common.getString
 import com.crow.mordecaix.common.platform
 import com.crow.mordecaix.common.setString
+import com.crow.mordecaix.desktop.composeapp.generated.resources.Res
+import com.crow.mordecaix.desktop.composeapp.generated.resources.history
 import com.crow.mordecaix.extensions.measureTimeNotnull
-import com.crow.mordecaix.resources.Res
-import com.crow.mordecaix.resources.history
 import com.crow.mordecaix.ui.component.RippleRoundedFillBox
 import org.jetbrains.compose.resources.stringResource
 
@@ -62,7 +62,7 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
                                 setString("StartDestinationScreen", item)
                                 navController.navigate(item) {
                                     // 防止在相同目的地之间重复导航
-                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                    popUpTo(navController.graph.startDestDisplayName) { saveState = true }
                                     // 避免重新创建以前的目标
                                     launchSingleTop = true
                                     // 恢复之前的导航状态
@@ -71,7 +71,6 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
                             }
                         ) {
                             when(item) {
-
                                 MordecaiXScreen.HistoryScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
                                 MordecaiXScreen.DiscoverScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
                                 MordecaiXScreen.BookshelfScreen -> { Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.Black) }
@@ -108,7 +107,7 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
                                         setString("StartDestinationScreen", item)
                                         navController.navigate(item) {
                                             // 防止在相同目的地之间重复导航
-                                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                            popUpTo(navController.graph.startDestDisplayName) { saveState = true }
                                             // 避免重新创建以前的目标
                                             launchSingleTop = true
                                             // 恢复之前的导航状态

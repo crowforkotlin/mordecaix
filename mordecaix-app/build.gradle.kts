@@ -1,11 +1,124 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
-@file:Suppress("UnstableApiUsage")
+@file:Suppress("unused")
 
+import org.gradle.kotlin.dsl.sourceSets
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+
+@Suppress("UnusedVariable")
+fun KotlinMultiplatformExtension.sourceSets() {
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.kotlinx.coroutines.android)
+                implementation(libs.kotlinx.coroutines.guava)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.koin.android)
+            }
+        }
+        val nativeMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.kotlinx.coroutines.swing)
+                implementation(libs.jetbrains.jewel.decorated)
+                implementation(libs.conveyor)
+            }
+        }
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlin.stdlib)
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+
+                implementation(libs.jetbrains.kotlinx.coroutines)
+                implementation(libs.jetbrains.kotlinx.collections)
+                implementation(libs.jetbrains.lifecycle.viewmodel)
+                implementation(libs.jetbrains.lifecycle.runtime.compose)
+                implementation(libs.jetbrains.compose.material.window)
+                implementation(libs.jetbrains.compose.material.icons.core)
+                implementation(libs.jetbrains.compose.material3.adaptive)
+                implementation(libs.jetbrains.compose.material3.adaptive.layout)
+                implementation(libs.jetbrains.compose.material3.adaptive.navigation)
+                implementation(libs.jetbrains.androidx.navigation)
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.coil)
+                implementation(libs.koin.compose.viewmodel)
+                implementation(libs.koin.compose.viewmodel.navigation)
+                implementation(libs.ktor.client.core)
+
+                implementation(libs.kotlinx.datetime)
+
+                implementation(libs.haze)
+                implementation(libs.haze.materials)
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("is-sorted", "1.0.5"))
+                implementation(libs.kotlin.stdlib.js)
+            }
+        }
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(libs.jetbrains.browser)
+            }
+        }
+        val nonWebCommonMain by getting {
+            dependencies {
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqlite)
+                implementation(libs.androidx.datastore)
+                implementation(libs.androidx.datastore.core)
+                implementation(libs.androidx.datastore.preference)
+            }
+        }
+        val webCommonMain by getting
+    }
+}
+fun KotlinHierarchyBuilder.native() {
+    group("native") {
+        group("apple") {
+            group("ios") { withIos() }
+            group("macos") { withMacos() }
+            withApple()
+        }
+        withNative()
+    }
+}
+fun KotlinHierarchyBuilder.webCommon() {
+    group(name="webCommon") {
+        withJs()
+        withWasmJs()
+    }
+}
+fun KotlinHierarchyBuilder.nonWebCommon() {
+    group(name = "nonWebCommon") {
+        withJvm()
+        withAndroidTarget()
+        native()
+    }
+}
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -15,48 +128,30 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.github.fourlastor.construo)
-    alias(libs.plugins.conveyor)
+    id("dev.hydraulic.conveyor") version "1.12"
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
+java {
+    toolchain {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 kotlin {
+
+    jvmToolchain {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 
     applyHierarchyTemplate(template = KotlinHierarchyTemplate {
         withSourceSetTree(tree = arrayOf(KotlinSourceSetTree.main, KotlinSourceSetTree.test))
         common {
             withCompilations { true }
-            group("nonAndroid") {
-                withJvm()
-                withJs()
-                withWasmJs()
-                group("native") {
-                    group("apple") {
-                        group("ios") { withIos() }
-                        group("macos") { withMacos() }
-                        withApple()
-                    }
-                    withNative()
-                }
-            }
-            group("nonJs") {
-                withJvm()
-                withAndroidTarget()
-                group("native") {
-                    group("apple") {
-                        group("ios") { withIos() }
-                        group("macos") { withMacos() }
-                        withApple()
-                    }
-                    withNative()
-                }
-            }
-            group("jsCommon") {
-                withJs()
-                withWasmJs()
-            }
+            native()
+            nonWebCommon()
+            webCommon()
         }
     })
 
@@ -64,10 +159,12 @@ kotlin {
 
     wasmJs {
         outputModuleName = "mordecaix"
-        useCommonJs()
         browser {
+            testTask {
+                enabled = false
+            }
             commonWebpackConfig {
-                outputFileName = "mordecaix-app.js"
+                outputFileName = "mordecaix.js"
                 /*devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
                         add(projectDirPath)
@@ -80,16 +177,18 @@ kotlin {
 
     js {
         outputModuleName = "mordecaix"
-        useCommonJs()
         browser {
+            testTask {
+                enabled = false
+            }
             commonWebpackConfig {
-                outputFileName = "mordecaix-app.js"
+                outputFileName = "mordecaix.js"
             }
         }
         binaries.executable()
     }
 
-    jvm(name = "desktop")
+    jvm("desktop")
 
     listOf(
         iosX64(),
@@ -103,85 +202,19 @@ kotlin {
         }
     }
 
-    sourceSets {
-        val androidMain by getting {
-            dependencies {
-                implementation(compose.preview)
-                implementation(libs.androidx.activity.compose)
-                implementation(libs.kotlinx.coroutines.android)
-                implementation(libs.kotlinx.coroutines.guava)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.koin.android)
-            }
-        }
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.kotlinx.coroutines.swing)
-                implementation(libs.jetbrains.jewel.decorated)
-
-                // Conveyor API: Manage automatic updates.
-                implementation(libs.conveyor.control)
-            }
-        }
-        val commonMain by getting {
-            dependencies {
-                implementation(projects.mordecaixBase)
-                implementation(libs.jetbrains.compose.material.icons)
-            }
-        }
-        val nonAndroidMain by getting {
-            dependencies {
-//                implementation(libs.skiko)
-            }
-        }
-        val nativeMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-        }
-        val nonJsMain by getting {
-            dependencies {
-                implementation(libs.androidx.room.runtime)
-                implementation(libs.androidx.sqlite)
-                implementation(libs.androidx.datastore)
-                implementation(libs.androidx.datastore.core)
-                implementation(libs.androidx.datastore.preference)
-            }
-        }
-
-        val jsCommonMain by getting { }
-        val wasmJsMain by getting {
-            dependencies {
-                implementation(libs.jetbrains.browser)
-            }
-        }
-        val jsMain by getting {
-            dependencies {
-                implementation(npm("is-sorted", "1.0.5"))
-                implementation(libs.kotlin.stdlib.js)
-            }
-        }
-    }
-}
-
-// region Work around temporary Compose bugs.
-configurations.all {
-    attributes {
-        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
-        attribute(Attribute.of("ui", String::class.java), "awt")
-    }
+    sourceSets()
 }
 
 android {
     namespace = "com.crow.mordecaix"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-
+    sourceSets {
+        named("main") {
+            manifest.srcFile("src/androidMain/AndroidManifest.xml")
+            res.srcDirs("src/androidMain/res")
+            resources.srcDirs("src/commonMain/resources")
+        }
+    }
     defaultConfig {
         applicationId = "com.crow.mordecaix"
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -199,7 +232,8 @@ android {
                 "kotlin-tooling-metadata.json",
                 "kotlin/**",
                 "META-INF/*.version",
-                "META-INF/**/LICENSE.txt"
+                "META-INF/**/LICENSE.txt",
+                "/META-INF/{AL2.0,LGPL2.1}"
             )
         }
         dex {
@@ -210,9 +244,8 @@ android {
         }
     }
     buildTypes {
-        getByName("release") {
-            isShrinkResources = true
-            isMinifyEnabled = false
+        release {
+            isMinifyEnabled = true
         }
     }
     compileOptions {
@@ -225,12 +258,6 @@ android {
     dependencies {
         debugImplementation(libs.androidx.compose.ui.tooling)
     }
-}
-
-compose.resources {
-    publicResClass = true
-    packageOfResClass = "com.crow.mordecaix.resources"
-    generateResClass = always
 }
 
 compose.desktop {
@@ -286,7 +313,6 @@ compose.desktop {
 
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
-    add("kspAndroid", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)
@@ -297,3 +323,5 @@ dependencies {
     macAarch64(compose.desktop.macos_arm64)
     windowsAmd64(compose.desktop.windows_x64)
 }
+
+room { schemaDirectory("$projectDir/schemas") }

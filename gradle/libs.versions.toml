@@ -26,31 +26,31 @@ skiko = "0.8.18"
 junit = "4.13.2"
 
 # https://github.com/JetBrains/kotlin
-kotlin = "2.1.20"
+kotlin = "2.2.20-RC"
 
 # https://github.com/google/ksp
-ksp = "2.1.20-2.0.1"
+ksp = "2.2.20-RC-2.0.2"
 
 # https://github.com/square/kotlinpoet
-kotlinpoet = "1.17.0"
+kotlinpoet = "2.2.0"
 
 # https://github.com/Kotlin/kotlinx.coroutines
-kotlinx-coroutines = "1.8.1"
+kotlinx-coroutines = "1.10.2"
 
 # https://github.com/Kotlin/kotlinx.serialization
-kotlinx-serialization = "1.8.1"
+kotlinx-serialization = "1.9.0"
 
 # https://github.com/gmazzo/gradle-buildconfig-plugin
 buildconfig = "5.6.7"
 
 # https://github.com/InsertKoinIO/koin
-koin = "4.0.1-Beta1"
+koin = "4.1.0"
 
 # https://github.com/ktorio/ktor
-ktor = "3.1.2"
+ktor = "3.2.3"
 
 # https://github.com/adrielcafe/voyager
-voyager = "1.1.0-beta02"
+voyager = "1.1.0-beta03"
 
 # https://github.com/fourlastor-alexandria/construo
 construo = "1.7.1"
@@ -68,7 +68,7 @@ kotlinx-collections = "0.4.0"
 kotlinx-datetime = "0.7.1"
 
 # https://github.com/Kotlin/kotlinx-browser
-kotlinx-browser = "0.3"
+kotlinx-browser = "0.5.0"
 
 # https://github.com/chrisbanes/haze
 haze = "1.6.10"
@@ -211,6 +211,9 @@ sonner = { module = "io.github.dokar3:sonner", version.ref = "sonner" }
 
 # mac package
 conveyor = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref= "conveyor" }
+
+gradle-android-application = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+gradle-koltin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -4,12 +4,13 @@ plugins {
     alias(libs.plugins.jetbrains.compose) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.github.fourlastor.construo) apply false
 }
 
-project.extra["pluginDataStoreInputDirPath"] = "D:\\fish\\MordecaiX\\composeApp\\datastore"
-project.extra["pluginDataStoreOutputDirPath"] = "${projectDir}\\datastore_temp"
+project.extra["pluginDataStoreInputDirPath"] = file("mordecaix-app/datastore").absolutePath
+project.extra["pluginDataStoreOutputDirPath"] = file("mordecaix-app/datastore-source").absolutePath
 
 apply(from = "gradle/plugin.datastore.gradle.kts")
 
