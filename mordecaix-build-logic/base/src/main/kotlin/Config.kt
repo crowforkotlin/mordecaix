@@ -1,8 +1,21 @@
-@file:Suppress("SpellCheckingInspection")
+@file:Suppress("SpellCheckingInspection", "ConstPropertyName")
 
 import org.gradle.api.Project
 
 object Config {
+
+  const val Group = "com.crow"
+  const val ApplicationId = "${Group}.mordecaix"
+
+  /**
+   * mordecaix-test/
+   * ├── android-compose/
+   * └── android/
+   * getBaseName ... => TestCompose、TestAndroid
+   *
+   * time: 2025-09-12 11:50:03 上午 星期五
+   * @author:crow
+   */
   fun getBaseName(project: Project): String {
     var baseName = ""
     var p: Project? = project
@@ -13,6 +26,17 @@ object Config {
     return baseName
   }
 
+  /**
+   * mordecaix-test/
+   * ├── android-compose/
+   * └── android/
+   * 取模块分割'-'后的最后一个昵称
+   *
+   * getNamespace... => $GROUP$namespace => com.mordecaix.test.compose、com.mordecaix.test.android
+   *
+   * time: 2025-09-12 11:50:11 上午 星期五
+   * @author:crow
+   */
   fun getNamespace(project: Project): String {
     var namespace = ""
     var p: Project? = project
@@ -20,6 +44,6 @@ object Config {
       namespace = ".${p.name.substringAfterLast("-")}$namespace"
       p = p.parent
     }
-    return "com.mordecaix$namespace"
+    return "$Group$namespace"
   }
 }

@@ -15,6 +15,7 @@ fun KotlinMultiplatformExtension.sourceSets() {
     sourceSets {
         val androidMain by getting {
             dependencies {
+                implementation(libs.androidx.compose.ui.tooling)
                 implementation(compose.preview)
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.kotlinx.coroutines.android)
@@ -120,8 +121,9 @@ fun KotlinHierarchyBuilder.nonWebCommon() {
 }
 
 plugins {
-    id("app.base.android")
-    alias(libs.plugins.kotlin.multiplatform)
+    id("app.base.application")
+//    alias(libs.plugins.android.application)
+//    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
@@ -130,6 +132,13 @@ plugins {
     alias(libs.plugins.conveyor)
 }
 
+/*composeApplication {
+    config(
+        versionCode = 1,
+        versionName = "1.0.0",
+        desktopMainClass = "MainKt"
+    )
+}*/
 
 kotlin {
 
@@ -143,7 +152,7 @@ kotlin {
         }
     })
 
-    androidTarget()
+
 
     wasmJs {
         outputModuleName = "mordecaix"
@@ -153,6 +162,7 @@ kotlin {
             }
             commonWebpackConfig {
                 outputFileName = "mordecaix.js"
+                showProgress = true
                 /*devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
                         add(projectDirPath)
@@ -160,6 +170,7 @@ kotlin {
                 }*/
             }
         }
+
         binaries.executable()
     }
 
@@ -176,8 +187,9 @@ kotlin {
         binaries.executable()
     }
 
+/*
     jvm("desktop")
-
+    androidTarget()
     listOf(
         iosX64(),
         iosArm64(),
@@ -189,6 +201,7 @@ kotlin {
             linkerOpts.add("-lsqlite3") // Required when using NativeSQLiteDriver
         }
     }
+*/
 
     sourceSets()
 }
