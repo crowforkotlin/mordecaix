@@ -93,7 +93,8 @@ kotlin {
 
         commonMain.dependencies {
             api(projects.mordecaixBase)
-            
+//            api(projects.mordecaixZipline)
+
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.runtime)

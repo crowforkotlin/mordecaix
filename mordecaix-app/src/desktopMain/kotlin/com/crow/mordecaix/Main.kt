@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +37,9 @@ import androidx.compose.ui.window.application
 import com.crow.mordecaix.common.getAppDatabase
 import com.crow.mordecaix.ui.theme.BLUEF9
 import com.crow.mordecaix.ui.theme.MordecaiXTheme
+import com.crow.mordecaix.zipline.DesktopHost
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.jetbrains.jewel.foundation.theme.JewelTheme
@@ -57,6 +61,7 @@ import java.awt.Dimension
 fun main() = application {
     initializeApplication()
     getAppDatabase()
+    DesktopHost(CoroutineScope(Dispatchers.Default)).start()
     IntUiTheme(
         theme = JewelTheme.lightThemeDefinition(),
         styling = ComponentStyling.default()

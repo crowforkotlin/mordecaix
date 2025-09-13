@@ -108,8 +108,22 @@ conveyor = "1.12"
 # https://mvnrepository.com/artifact/dev.hydraulic.conveyor/conveyor-control
 conveyor-control = "1.1"
 
+zipline = "1.23.0"
+
+okio = "3.16.0"
+
+okhttp = "5.1.0"
+
 
 [libraries]
+okio-core = { module = "com.squareup.okio:okio", version.ref = "okio" }
+
+zipline = { module = "app.cash.zipline:zipline", version.ref = "zipline"}
+zipline-loader = { module = "app.cash.zipline:zipline-loader", version.ref = "zipline"}
+zipline-profiler = { module = "app.cash.zipline:zipline-profiler", version.ref = "zipline"}
+
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+
 kotlin-stdlib-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -249,6 +263,8 @@ buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 github-fourlastor-construo = { id = "io.github.fourlastor.construo", version.ref = "construo" }
+
+zipline = { id = "app.cash.zipline", version.ref = "zipline" }
 
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
