@@ -1,14 +1,11 @@
 package com.crow.mordecaix
 
-import android.app.Application
+import com.crow.mordecaix.base.application.BaseApp
 
-class MainApplication : Application() {
-
-    companion object { lateinit var app : MainApplication }
+class MainApplication : BaseApp() {
 
     override fun onCreate() {
         super.onCreate()
-        app = this
         initializeApplication()
     }
 }

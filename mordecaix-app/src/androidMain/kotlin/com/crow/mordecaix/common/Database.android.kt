@@ -3,7 +3,7 @@ package com.crow.mordecaix.common
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.crow.mordecaix.MainApplication.Companion.app
+import com.crow.mordecaix.base.application.app
 import com.crow.mordecaix.common.todo.AppDatabase
 import com.crow.mordecaix.extensions.setDefaults
 import kotlinx.coroutines.Dispatchers

@@ -69,7 +69,7 @@ fun main() = application {
         MordecaiXTheme {
             DecoratedWindow(
                 onCloseRequest = ::exitApplication,
-                title = "MordecaiX",
+                title = "mordecaix ",
                 enabled = true,
                 visible = true,
                 icon = BitmapPainter(useResource("favicon.ico") {
