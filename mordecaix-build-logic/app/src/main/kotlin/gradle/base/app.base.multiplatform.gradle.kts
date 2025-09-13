@@ -8,7 +8,9 @@ plugins {
 
 kotlin {
     jvmToolchain(17)
+
     jvm("desktop")
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -19,11 +21,27 @@ kotlin {
             isStatic = true
         }
     }
+
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
+    }
+
+    wasmJs {
+        browser {
+            testTask { enabled = false }
+            commonWebpackConfig { showProgress = true }
+        }
+        binaries.executable()
+    }
+
+    js {
+        browser {
+            testTask { enabled = false }
+            commonWebpackConfig { showProgress = true }
+        }
+        binaries.executable()
     }
 
     sourceSets {

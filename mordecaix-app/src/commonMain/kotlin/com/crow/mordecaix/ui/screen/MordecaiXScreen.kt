@@ -25,8 +25,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
+import com.crow.mordecaix.HazeSampleApp
 import com.crow.mordecaix.ui.viewmodel.AppViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.Clock
 
 data object MordecaiXScreen {
     const val MainScreen = "MainScreen"
@@ -38,7 +40,7 @@ data object MordecaiXScreen {
 }
 
 @Composable
-fun MordecaiXApp(
+fun  MordecaiXApp(
     windowSize: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
     viewmodel: AppViewModel = koinViewModel<AppViewModel>(),
     navController: NavHostController = rememberNavController()

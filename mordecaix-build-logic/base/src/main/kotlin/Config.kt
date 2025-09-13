@@ -2,10 +2,12 @@
 
 import org.gradle.api.Project
 
+
 object Config {
 
   const val Group = "com.crow"
   const val ApplicationId = "${Group}.mordecaix"
+  const val ApplicationName = "mordecaix"
 
   /**
    * mordecaix-test/

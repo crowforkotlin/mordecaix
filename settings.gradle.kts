@@ -71,5 +71,7 @@ fun includeModule(topName: String, file: File) {
 
 
 include(":mordecaix-app")
+include(":mordecaix-base")
+include(":mordecaix-zipline")
 
 includeModule(topName = "mordecaix-test", file = rootDir.resolve(relative = "mordecaix-test"))

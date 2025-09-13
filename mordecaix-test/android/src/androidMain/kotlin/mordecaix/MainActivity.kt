@@ -4,9 +4,10 @@ package mordecaix
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.core.app.ComponentActivity
 import com.crow.test.android.databinding.ActivityMainBinding
 
-class MainActivity : Activity() {
+class MainActivity : ComponentActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

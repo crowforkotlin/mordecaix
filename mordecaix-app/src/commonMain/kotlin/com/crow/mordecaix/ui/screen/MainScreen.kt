@@ -29,14 +29,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.crow.mordecaix.common.Platform
-import com.crow.mordecaix.common.getString
-import com.crow.mordecaix.common.platform
-import com.crow.mordecaix.common.setString
-import com.crow.mordecaix.desktop.mordecaix_app.generated.resources.Res
-import com.crow.mordecaix.desktop.mordecaix_app.generated.resources.history
+import com.crow.mordecaix.base.common.BasePlatform
+import com.crow.mordecaix.base.common.basePlatform
+import com.crow.mordecaix.base.common.getString
+import com.crow.mordecaix.base.common.setString
 import com.crow.mordecaix.extensions.measureTimeNotnull
 import com.crow.mordecaix.ui.component.RippleRoundedFillBox
+import com.crow.mordecaix_app.generated.resources.Res
+import com.crow.mordecaix_app.generated.resources.history
 import org.jetbrains.compose.resources.stringResource
 
 val items = listOf(MordecaiXScreen.HistoryScreen, MordecaiXScreen.DiscoverScreen, MordecaiXScreen.BookshelfScreen, MordecaiXScreen.SettingScreen)
@@ -84,7 +84,7 @@ fun MainScreen(windowSize: WindowSizeClass, onClick: () -> Unit) {
         }
     } else {
         AnimatedContent {
-            if(platform == Platform.Desktop) {
+            if(basePlatform == BasePlatform.Desktop) {
                 MainNavHost(state, navController, windowSize)
             } else {
                 Scaffold(

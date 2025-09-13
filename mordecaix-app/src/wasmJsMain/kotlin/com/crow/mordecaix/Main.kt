@@ -3,6 +3,8 @@ package com.crow.mordecaix
 import androidx.compose.material.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import com.crow.mordecaix.base.common.BasePlatform
+import com.crow.mordecaix.base.common.basePlatform
 import kotlinx.browser.document
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
