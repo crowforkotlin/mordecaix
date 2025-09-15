@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mordecai.zipline
+package com.crow.mordecaix.zipline
 
-import android.system.Os.bind
-import android.util.Log
-import app.cash.zipline.Zipline
 import app.cash.zipline.loader.DefaultFreshnessCheckerNotFresh
 import app.cash.zipline.loader.LoadResult
 import app.cash.zipline.loader.ZiplineLoader
@@ -43,37 +40,16 @@ fun startHostZipline(
       freshnessChecker = DefaultFreshnessCheckerNotFresh,
       manifestUrl = manifestUrl,
       serializersModule = EmptySerializersModule(),
-      initializer = { it.bind<LogService>("androidLog", host) }
+      initializer = { it.bind<LogService>("logger", host) }
     )
       .apply {
         val result = this
         if (result is LoadResult.Success) {
           val zipline = result.zipline
-          Log.d("AndroidLogger", "zipline result is $zipline")
           val log = zipline.take<LogService>("JsLog")
-          log.log("hello from android!")
-          Log.d("AndroidLogger", "zipline result is $result")
+          log.log("log from host main")
         }
       }
-    return@launch
-    val loadResultFlow: Flow<LoadResult> = ziplineLoader.load(
-      applicationName = "Logger",
-      freshnessChecker = DefaultFreshnessCheckerNotFresh,
-      manifestUrlFlow = flow(manifestUrl, 500L),
-      initializer = { zipline: Zipline ->
-//        zipline.bind<ReqService>("request", ReqServices())
-        zipline.bind<LogService>("androidLog", host)
-      },
-    )
-    loadResultFlow.collect { result ->
-      if (result is LoadResult.Success) {
-        val zipline = result.zipline
-        Log.d("AndroidLogger", "zipline result is $zipline")
-        val log = zipline.take<LogService>("JsLog")
-        log.log("hello from android!")
-        Log.d("AndroidLogger", "zipline result is $result")
-      }
-    }
   }
 }
 

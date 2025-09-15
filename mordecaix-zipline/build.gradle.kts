@@ -1,24 +1,14 @@
-import app.cash.zipline.gradle.ZiplineServeTask
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("app.base.library")
+    id("app.base.multiplatform")
     alias(libs.plugins.zipline)
-    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.serialization)
 }
 
-group = "com.mordecai"
-version = "1.0.0"
-
 kotlin {
-    applyDefaultHierarchyTemplate()
-    androidTarget()
-    js {
-        browser()
-        binaries.executable()
-    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -40,26 +30,20 @@ kotlin {
                 implementation(libs.okhttp)
             }
         }
-    }
-}
-
-android {
-    compileSdk = 36
-    namespace = "com.mordecai.zipline.presenter"
-    defaultConfig { minSdk = 23 }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        val desktopMain by getting {
+            dependsOn(hostMain)
+        }
+        val jsMain by getting {
+            dependsOn(hostMain)
+            dependencies {
+            }
+        }
     }
 }
 
 zipline {
-    mainFunction.set("com.mordecai.zipline.main")
+    mainFunction.set("com.crow.mordecaix.zipline.main")
     httpServerPort.set(8000)
-}
-tasks.named<ZiplineServeTask>("serveDevelopmentZipline") {
-    port
-    inputDir
 }
 
 plugins.withType<YarnPlugin> {

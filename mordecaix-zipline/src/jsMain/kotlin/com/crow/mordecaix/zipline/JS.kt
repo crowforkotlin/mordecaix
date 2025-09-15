@@ -1,7 +1,6 @@
-package com.mordecai.zipline
+package com.crow.mordecaix.zipline
 
 import app.cash.zipline.Zipline
-import app.cash.zipline.ZiplineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -37,7 +36,7 @@ fun main() {
 class JsLog : LogService {
   override fun log(content: String) {
     console.info("[JS Log] $content")
-//    val androidLog = zipline.take<LogService>("androidLog")
-//    androidLog.log("hello from kotlin/js!")
+    val hostLog = zipline.take<LogService>("logger")
+    hostLog.log("hello from kotlin/js!")
   }
 }

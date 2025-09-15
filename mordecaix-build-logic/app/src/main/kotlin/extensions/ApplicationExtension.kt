@@ -38,12 +38,12 @@ abstract class ApplicationExtension(val project: Project) {
         this.outputModuleName.set(jsModuleName)
         this.browser { this.commonWebpackConfig { this.outputFileName = jsOutputFileName } }
       }
-      this.wasmJs {
+      /*this.wasmJs {
         project.group = Config.Group
         this.wasmJsConfig()
         this.outputModuleName.set(jsModuleName)
         this.browser { this.commonWebpackConfig { this.outputFileName = jsOutputFileName } }
-      }
+      }*/
     }
     project.configure<BaseAppModuleExtension> {
       defaultConfig {

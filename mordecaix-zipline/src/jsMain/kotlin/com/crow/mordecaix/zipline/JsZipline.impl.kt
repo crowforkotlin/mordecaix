@@ -13,42 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mordecai.zipline
+package com.crow.mordecaix.zipline
 
-import android.R.attr.host
-import android.content.Context
-import android.util.Log
-import app.cash.zipline.loader.ManifestVerifier.Companion.NO_SIGNATURE_CHECKS
-import app.cash.zipline.loader.ZiplineLoader
-import com.mordecai.zipline.log.AndroidLogger
-import java.util.concurrent.Executors
+import com.crow.mordecaix.zipline.startHostZipline
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.statement.readRawBytes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
-import okhttp3.OkHttpClient
-import okio.FileSystem
-import okio.Path
-import okio.Path.Companion.toPath
+import okio.ByteString
+import okio.ByteString.Companion.toByteString
+import java.util.concurrent.Executors
 
 
-class AndroidLoggerZL(
-  private val applicationContext: Context,
-  private val scope: CoroutineScope,
-) {
+class JsZipline(private val scope: CoroutineScope) {
+
   private val ziplineExecutorService = Executors.newSingleThreadExecutor { Thread(it, "Zipline") }
   private val ziplineDispatcher = ziplineExecutorService.asCoroutineDispatcher()
-  private val okHttpClient = OkHttpClient()
 
   fun start() {
+
     startHostZipline(
       scope = scope,
       ziplineDispatcher = ziplineDispatcher,
       ziplineLoader = ZiplineLoader(
         dispatcher = ziplineDispatcher,
         manifestVerifier = NO_SIGNATURE_CHECKS,
-        httpClient = okHttpClient,
+        httpClient = object : ZiplineHttpClient() {
+          override suspend fun download(url: String, requestHeaders: List<Pair<String, String>>): ByteString {
+            return HttpClient().get(url) {
+              requestHeaders.forEach { header ->
+                  headers[header.first] = header.second
+              }
+            }.readRawBytes().toByteString()
+          }
+        },
       ),
       manifestUrl = "http://192.168.137.1:8080/manifest.zipline.json",
-      host = AndroidLogger()
+      host = DesktopLogger()
     )
   }
 

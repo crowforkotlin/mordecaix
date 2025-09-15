@@ -28,13 +28,13 @@ kotlin {
         }
     }
 
-    wasmJs {
+    /*wasmJs {
         browser {
             testTask { enabled = false }
             commonWebpackConfig { showProgress = true }
         }
         binaries.executable()
-    }
+    }*/
 
     js {
         browser {

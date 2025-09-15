@@ -19,7 +19,7 @@ fun KotlinMultiplatformExtension.applyBaseHierarchyTemplate(common: (KotlinHiera
             this.native()
             this.nonWebCommon()
             this.webCommon()
-            this.nonWasmCommon()
+//            this.nonWasmCommon()
         }
     })
 }

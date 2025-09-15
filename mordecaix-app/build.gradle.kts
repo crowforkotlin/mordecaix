@@ -82,7 +82,11 @@ kotlin {
             implementation(libs.conveyor)
         }
 
-        jsMain.dependencies { implementation(npm("is-sorted", "1.0.5")) }
+        jsMain.dependencies {
+            implementation(npm("is-sorted", "1.0.5"))
+            implementation(libs.zipline)
+            implementation(libs.zipline.loader)
+        }
 
         wasmJsMain.dependencies { }
 
@@ -93,7 +97,7 @@ kotlin {
 
         commonMain.dependencies {
             api(projects.mordecaixBase)
-//            api(projects.mordecaixZipline)
+            api(projects.mordecaixZipline)
 
             implementation(compose.material3)
             implementation(compose.components.resources)

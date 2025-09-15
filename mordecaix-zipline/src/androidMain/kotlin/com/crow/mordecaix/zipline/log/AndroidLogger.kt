@@ -1,7 +1,7 @@
-package com.mordecai.zipline.log
+package com.crow.mordecaix.zipline.log
 
 import android.util.Log
-import com.mordecai.zipline.LogService
+import com.crow.mordecaix.zipline.LogService
 
 class AndroidLogger : LogService {
   override fun log(content: String) {

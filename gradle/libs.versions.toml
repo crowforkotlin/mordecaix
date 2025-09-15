@@ -34,10 +34,11 @@ skiko = "0.8.18"
 junit = "4.13.2"
 
 # https://github.com/JetBrains/kotlin
-kotlin = "2.2.20-RC"
+#kotlin = "2.2.20-RC"
+kotlin = "2.2.10"
 
 # https://github.com/google/ksp
-ksp = "2.2.20-RC-2.0.2"
+ksp = "2.2.10-2.0.2"
 
 # https://github.com/square/kotlinpoet
 kotlinpoet = "2.2.0"
@@ -108,10 +109,13 @@ conveyor = "1.12"
 # https://mvnrepository.com/artifact/dev.hydraulic.conveyor/conveyor-control
 conveyor-control = "1.1"
 
+# https://github.com/cashapp/zipline
 zipline = "1.23.0"
 
+# https://github.com/square/okio
 okio = "3.16.0"
 
+# https://github.com/square/okhttp
 okhttp = "5.1.0"
 
 
