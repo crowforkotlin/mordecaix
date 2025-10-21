@@ -32,7 +32,7 @@ fun startHostZipline(
   ziplineDispatcher: CoroutineDispatcher,
   ziplineLoader: ZiplineLoader,
   manifestUrl: String,
-  host: LogService
+  host: BaseLogger
 ) {
   scope.launch(ziplineDispatcher + SupervisorJob()) {
     ziplineLoader.loadOnce(
@@ -40,14 +40,18 @@ fun startHostZipline(
       freshnessChecker = DefaultFreshnessCheckerNotFresh,
       manifestUrl = manifestUrl,
       serializersModule = EmptySerializersModule(),
-      initializer = { it.bind<LogService>("logger", host) }
+      initializer = {
+        repeat(10000) { count ->
+          it.bind<BaseLogger>(name = "logger$count", host)
+        }
+      }
     )
       .apply {
         val result = this
+        println(result)
         if (result is LoadResult.Success) {
           val zipline = result.zipline
-          val log = zipline.take<LogService>("JsLog")
-          log.log("log from host main")
+          val log = zipline.take<BaseLogger>(name = "JsLog")
         }
       }
   }

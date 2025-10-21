@@ -1,3 +1,5 @@
+@file:Suppress("OPT_IN_USAGE")
+
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
@@ -9,10 +11,11 @@ plugins {
 }
 
 kotlin {
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.zipline)
+                api(projects.mordecaixZiplineCommon)
                 implementation(libs.ktor.client.core)
             }
         }
@@ -34,7 +37,7 @@ kotlin {
             dependsOn(hostMain)
         }
         val jsMain by getting {
-            dependsOn(hostMain)
+            dependsOn(commonMain)
             dependencies {
             }
         }

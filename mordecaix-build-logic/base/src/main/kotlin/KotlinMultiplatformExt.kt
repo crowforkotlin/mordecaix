@@ -11,14 +11,16 @@ val KotlinMultiplatformExtension.nonWebCommonMain: KotlinSourceSet get() {
     return this.sourceSets.getByName("nonWebCommonMain")
 }
 
-fun KotlinMultiplatformExtension.applyBaseHierarchyTemplate(common: (KotlinHierarchyBuilder.() -> Unit)? = null) {
+fun KotlinMultiplatformExtension.applyBaseHierarchyTemplate(
+    common: (KotlinHierarchyBuilder.() -> Unit)? = null
+) {
     this.applyHierarchyTemplate(template = KotlinHierarchyTemplate {
         this.withSourceSetTree(tree = arrayOf(KotlinSourceSetTree.main, KotlinSourceSetTree.test))
         this.common {
             this.withCompilations { true }
-            this.native()
             this.nonWebCommon()
-            this.webCommon()
+//            this.native()
+//            this.webCommon()
 //            this.nonWasmCommon()
         }
     })
@@ -45,7 +47,7 @@ fun KotlinHierarchyBuilder.nonWebCommon() {
     group(name = "nonWebCommon") {
         withJvm()
         withAndroidTarget()
-        native()
+//        native()
     }
 }
 

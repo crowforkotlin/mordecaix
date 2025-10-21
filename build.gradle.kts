@@ -61,6 +61,4 @@ fun Project.kotlinDependenciesConfig() {
         }
     }
 }
-allprojects {
-    kotlinDependenciesConfig()
-}
+allprojects { kotlinDependenciesConfig() }

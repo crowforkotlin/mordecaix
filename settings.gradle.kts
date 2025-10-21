@@ -7,7 +7,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     includeBuild("mordecaix-build-logic")
     repositories {
-        mavenLocal()
+//        mavenLocal()
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -22,7 +22,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        mavenLocal()
+//        mavenLocal()
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -73,5 +73,6 @@ fun includeModule(topName: String, file: File) {
 include(":mordecaix-app")
 include(":mordecaix-base")
 include(":mordecaix-zipline")
+include(":mordecaix-zipline-common")
 
 includeModule(topName = "mordecaix-test", file = rootDir.resolve(relative = "mordecaix-test"))

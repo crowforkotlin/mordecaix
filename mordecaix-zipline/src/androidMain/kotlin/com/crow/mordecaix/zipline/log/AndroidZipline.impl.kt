@@ -43,7 +43,7 @@ class AndroidZipline(
         httpClient = okHttpClient,
       ),
       manifestUrl = "http://192.168.137.1:8080/manifest.zipline.json",
-      host = AndroidLogger()
+      host = AndroidLog()
     )
   }
 

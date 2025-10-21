@@ -52,7 +52,7 @@ class DesktopZipline(private val scope: CoroutineScope) {
           }
         },
       ),
-      manifestUrl = "http://192.168.137.1:8080/manifest.zipline.json",
+      manifestUrl = "http://192.168.137.1:8000/manifest.zipline.json",
       host = DesktopLogger()
     )
   }

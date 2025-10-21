@@ -1,10 +1,6 @@
-import com.android.tools.r8.internal.de
-import org.gradle.kotlin.dsl.androidMain
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.jsMain
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     id("app.base.library")
@@ -19,8 +15,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
 
-
-
             api(libs.kotlin.stdlib)
 
             api(libs.kotlinx.serialization.json)
@@ -33,31 +27,21 @@ kotlin {
 
             api(libs.kotlinx.coroutines)
         }
-
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
-
         desktopMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
-
-        nativeMain.dependencies {
+        /*nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
-        }
-
-        jsMain.dependencies {
-            implementation(libs.kotlin.stdlib.js)
-        }
-
-        wasmJsMain.dependencies {
-            implementation(libs.jetbrains.browser)
-        }
-
-        nonWebCommonMain. dependencies {
-            implementation(libs.androidx.datastore)
-            implementation(libs.androidx.datastore.core)
-            implementation(libs.androidx.datastore.preference)
+        }*/
+        nonWebCommonMain.dependencies {
+            api(libs.androidx.room.runtime)
+            api(libs.androidx.sqlite)
+            api(libs.androidx.datastore)
+            api(libs.androidx.datastore.core)
+            api(libs.androidx.datastore.preference)
         }
     }
 }
