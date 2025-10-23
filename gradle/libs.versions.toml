@@ -34,10 +34,11 @@ skiko = "0.8.18"
 junit = "4.13.2"
 
 # https://github.com/JetBrains/kotlin
-kotlin = "2.2.20-RC"
+#kotlin = "2.2.20-RC"
+kotlin = "2.2.10"
 
 # https://github.com/google/ksp
-ksp = "2.2.20-RC-2.0.2"
+ksp = "2.2.10-2.0.2"
 
 # https://github.com/square/kotlinpoet
 kotlinpoet = "2.2.0"
@@ -108,8 +109,26 @@ conveyor = "1.12"
 # https://mvnrepository.com/artifact/dev.hydraulic.conveyor/conveyor-control
 conveyor-control = "1.1"
 
+# https://github.com/cashapp/zipline
+#zipline = "1.23.0"
+zipline = "1.24.0"
+
+# https://github.com/square/okio
+okio = "3.16.0"
+
+# https://github.com/square/okhttp
+okhttp = "5.1.0"
+
 
 [libraries]
+okio-core = { module = "com.squareup.okio:okio", version.ref = "okio" }
+
+zipline = { module = "io.github.crowforkotlin.zipline:zipline", version.ref = "zipline"}
+zipline-loader = { module = "io.github.crowforkotlin.zipline:zipline-loader", version.ref = "zipline"}
+zipline-profiler = { module = "io.github.crowforkotlin:zipline-profiler", version.ref = "zipline"}
+
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+
 kotlin-stdlib-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -249,6 +268,8 @@ buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 github-fourlastor-construo = { id = "io.github.fourlastor.construo", version.ref = "construo" }
+
+zipline = { id = "io.github.crowforkotlin.zipline", version.ref = "zipline" }
 
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

@@ -36,6 +36,9 @@ import androidx.compose.ui.window.application
 import com.crow.mordecaix.common.getAppDatabase
 import com.crow.mordecaix.ui.theme.BLUEF9
 import com.crow.mordecaix.ui.theme.MordecaiXTheme
+import com.crow.mordecaix.zipline.log.DesktopZipline
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.jetbrains.jewel.foundation.theme.JewelTheme
@@ -57,6 +60,7 @@ import java.awt.Dimension
 fun main() = application {
     initializeApplication()
     getAppDatabase()
+    DesktopZipline(CoroutineScope(Dispatchers.Default)).start()
     IntUiTheme(
         theme = JewelTheme.lightThemeDefinition(),
         styling = ComponentStyling.default()

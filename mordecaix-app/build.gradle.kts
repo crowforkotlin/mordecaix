@@ -18,51 +18,52 @@ composeApplication {
         desktopMainClass = "MainKt",
         jsModuleName = Config.ApplicationName,
         jsOutputFileName = "${Config.ApplicationName}.js",
-        desktopConfig = {
-            this.application {
-                this.buildTypes.release {
-                    proguard {
-                        this.optimize = false
-                        this.obfuscate = true
-                        this.configurationFiles.from(project.file("src/desktopMain/compose-desktop.pro"))
-                    }
-                }
-                this.nativeDistributions {
-                    this.modules(
-                        modules = arrayOf(
-                            "java.instrument",
-                            "java.naming",
-                            "java.sql",
-                            "jdk.management",
-                            "jdk.unsupported",
-                            "java.net.http"
-                        )
-                    )
-                    this.appResourcesRootDir = layout.projectDirectory.dir("src/desktopMain/assets")
-                    this.targetFormats(
-                        formats = arrayOf(
-                            TargetFormat.Dmg,
-                            TargetFormat.Msi,
-                            TargetFormat.Deb,
-                            TargetFormat.Exe,
-                            TargetFormat.Rpm,
-                            TargetFormat.Pkg
-                        )
-                    )
-                    this@application.jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
-                    this@application.jvmArgs(
-                        "--add-opens",
-                        "java.desktop/java.awt.peer=ALL-UNNAMED"
-                    )
-                    this.macOS {
-                        this.bundleID = Config.ApplicationId
-                        this.appCategory = "public.app-category.developer-tools"
-                        this.entitlementsFile.set(project.file("default.entitlements"))
-                    }
-                }
+    )
+}
+
+compose.desktop {
+    this.application {
+        this.buildTypes.release {
+            proguard {
+                this.optimize = false
+                this.obfuscate = true
+                this.configurationFiles.from(project.file("src/desktopMain/compose-desktop.pro"))
             }
         }
-    )
+        this.nativeDistributions {
+            this.modules(
+                modules = arrayOf(
+                    "java.instrument",
+                    "java.naming",
+                    "java.sql",
+                    "jdk.management",
+                    "jdk.unsupported",
+                    "java.net.http"
+                )
+            )
+            this.appResourcesRootDir = layout.projectDirectory.dir("src/desktopMain/assets")
+            this.targetFormats(
+                formats = arrayOf(
+                    TargetFormat.Dmg,
+                    TargetFormat.Msi,
+                    TargetFormat.Deb,
+                    TargetFormat.Exe,
+                    TargetFormat.Rpm,
+                    TargetFormat.Pkg
+                )
+            )
+            this@application.jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+            this@application.jvmArgs(
+                "--add-opens",
+                "java.desktop/java.awt.peer=ALL-UNNAMED"
+            )
+            this.macOS {
+                this.bundleID = Config.ApplicationId
+                this.appCategory = "public.app-category.developer-tools"
+                this.entitlementsFile.set(project.file("default.entitlements"))
+            }
+        }
+    }
 }
 
 kotlin {
@@ -74,26 +75,15 @@ kotlin {
             implementation(libs.koin.android)
         }
 
-        nativeMain.dependencies { }
-
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.jetbrains.jewel.decorated)
             implementation(libs.conveyor)
         }
 
-        jsMain.dependencies { implementation(npm("is-sorted", "1.0.5")) }
-
-        wasmJsMain.dependencies { }
-
-        nonWebCommonMain.dependencies {
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.androidx.sqlite)
-        }
-
         commonMain.dependencies {
             api(projects.mordecaixBase)
-            
+            api(projects.mordecaixZipline)
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.runtime)
@@ -122,13 +112,13 @@ kotlin {
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspIosX64", libs.androidx.room.compiler)
-    add("kspIosArm64", libs.androidx.room.compiler)
+//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+//    add("kspIosArm64", libs.androidx.room.compiler)
 
     linuxAmd64(compose.desktop.linux_x64)
-    macAmd64(compose.desktop.macos_x64)
-    macAarch64(compose.desktop.macos_arm64)
+//    macAmd64(compose.desktop.macos_x64)
+//    macAarch64(compose.desktop.macos_arm64)
     windowsAmd64(compose.desktop.windows_x64)
 }
 

@@ -1,4 +1,4 @@
-package com.course.shared.utils
+package com.crow.mordecaix.base.utils
 
 /**
  * @author Jovines
