@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.crow.mordecaix.zipline.log
+package com.crow.mordecaix.zipline
 
 import app.cash.zipline.loader.ManifestVerifier.Companion.NO_SIGNATURE_CHECKS
 import app.cash.zipline.loader.ZiplineHttpClient
 import app.cash.zipline.loader.ZiplineLoader
-import com.crow.mordecaix.zipline.DesktopLogger
-import com.crow.mordecaix.zipline.startHostZipline
+import com.crow.mordecaix.zipline.impl.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.readRawBytes
@@ -27,38 +26,41 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
+import org.koin.mp.KoinPlatform.getKoin
 import java.util.concurrent.Executors
 
 
-class DesktopZipline(private val scope: CoroutineScope) {
+class Host(
+  private val scope: CoroutineScope,
+) : BaseHost(scope) {
 
   private val ziplineExecutorService = Executors.newSingleThreadExecutor { Thread(it, "Zipline") }
   private val ziplineDispatcher = ziplineExecutorService.asCoroutineDispatcher()
+  private val koin by lazy { getKoin() }
 
   fun start() {
-    startHostZipline(
-      scope = scope,
+    val httpClient = koin.get<HttpClient>()
+    load(
       ziplineDispatcher = ziplineDispatcher,
       ziplineLoader = ZiplineLoader(
         dispatcher = ziplineDispatcher,
         manifestVerifier = NO_SIGNATURE_CHECKS,
         httpClient = object : ZiplineHttpClient() {
           override suspend fun download(url: String, requestHeaders: List<Pair<String, String>>): ByteString {
-            return HttpClient().get(url) {
-              requestHeaders.forEach { header ->
-                  headers[header.first] = header.second
-              }
-            }.readRawBytes().toByteString()
+            return httpClient.get(urlString = url) { requestHeaders.forEach { header -> headers[header.first] = header.second } }.readRawBytes().toByteString()
           }
         },
       ),
       manifestUrl = "http://192.168.137.1:8000/manifest.zipline.json",
-      host = DesktopLogger()
+      initializer = { zipline ->
+        zipline.bind(name = "Logger", instance = Logger())
+      }
     )
   }
 
   fun close() {
     ziplineExecutorService.shutdown()
+
   }
 
 }

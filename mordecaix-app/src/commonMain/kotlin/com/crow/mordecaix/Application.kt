@@ -7,8 +7,10 @@ import org.koin.core.context.startKoin
 fun initializeApplication() {
     startKoin {
         modules(
-            networkModule,
-            viewmodelModule,
+            modules = arrayOf(
+                networkModule,
+                viewmodelModule
+            )
         )
     }
 }

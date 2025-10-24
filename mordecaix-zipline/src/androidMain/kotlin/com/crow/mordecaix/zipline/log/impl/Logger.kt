@@ -1,11 +1,10 @@
-@file:Suppress("SpellCheckingInspection")
-
-package com.crow.mordecaix.zipline.log
+package com.crow.mordecaix.zipline.log.impl
 
 import android.util.Log
-import com.crow.mordecaix.zipline.BaseLogger
+import com.crow.mordecaix.zipline.services.BaseLogger
 
-class AndroidLog : BaseLogger {
+class Logger : BaseLogger {
+
   companion object {
     private const val TAG = "mordecaix-logger"
   }

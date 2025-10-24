@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status="WARN" 用于设置 Log4j2 自身内部的日志级别 -->
+<Configuration status="WARN">
+    <Appenders>
+        <!-- 1. 控制台输出配置 (保持不变) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=cyan, TRACE=blue} %logger{36} - %msg%n" />
+        </Console>
+
+        <!-- 2. 文件输出配置 (已修改为不压缩) -->
+        <!--
+            filePattern: 文件名后缀从 .log.gz 改为 .log，禁用了压缩。
+        -->
+        <RollingFile name="RollingFile"
+            fileName="logcat/current.log"
+            filePattern="logcat/logcat-%d{yyyy-MM-dd_HH-mm-ss}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 核心策略：在JVM (应用) 启动时，立即创建一个新的带时间戳的日志文件 -->
+                <OnStartupTriggeringPolicy />
+                <!-- 额外策略：如果单次运行的日志文件超过10MB，也会进行分割 -->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <!-- 最多保留最近 100 次运行的日志文件 -->
+            <DefaultRolloverStrategy max="100" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+</Configuration>

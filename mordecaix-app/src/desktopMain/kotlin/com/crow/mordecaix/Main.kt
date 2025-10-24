@@ -36,7 +36,8 @@ import androidx.compose.ui.window.application
 import com.crow.mordecaix.common.getAppDatabase
 import com.crow.mordecaix.ui.theme.BLUEF9
 import com.crow.mordecaix.ui.theme.MordecaiXTheme
-import com.crow.mordecaix.zipline.log.DesktopZipline
+import com.crow.mordecaix.zipline.Host
+import io.ktor.http.HttpHeaders.Host
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -54,13 +55,15 @@ import org.jetbrains.jewel.window.DecoratedWindowScope
 import org.jetbrains.jewel.window.TitleBar
 import org.jetbrains.jewel.window.styling.TitleBarColors
 import org.jetbrains.jewel.window.styling.TitleBarStyle
+import org.koin.compose.getKoin
+import org.koin.core.Koin
 import java.awt.Dimension
 
 @OptIn(ExperimentalResourceApi::class)
 fun main() = application {
     initializeApplication()
     getAppDatabase()
-    DesktopZipline(CoroutineScope(Dispatchers.Default)).start()
+    Host(CoroutineScope(Dispatchers.Default)).start()
     IntUiTheme(
         theme = JewelTheme.lightThemeDefinition(),
         styling = ComponentStyling.default()

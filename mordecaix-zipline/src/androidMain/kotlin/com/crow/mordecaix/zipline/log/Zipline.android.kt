@@ -18,6 +18,7 @@ package com.crow.mordecaix.zipline.log
 import android.content.Context
 import app.cash.zipline.loader.ManifestVerifier.Companion.NO_SIGNATURE_CHECKS
 import app.cash.zipline.loader.ZiplineLoader
+import com.crow.mordecaix.zipline.log.impl.Logger
 import com.crow.mordecaix.zipline.startHostZipline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -43,7 +44,7 @@ class AndroidZipline(
         httpClient = okHttpClient,
       ),
       manifestUrl = "http://192.168.137.1:8080/manifest.zipline.json",
-      host = AndroidLog()
+      host = Logger()
     )
   }
 

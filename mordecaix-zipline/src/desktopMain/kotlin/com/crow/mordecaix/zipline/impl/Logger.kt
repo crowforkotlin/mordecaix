@@ -1,10 +1,9 @@
-@file:Suppress("SpellCheckingInspection")
+package com.crow.mordecaix.zipline.impl
 
-package com.crow.mordecaix.zipline
-
+import com.crow.mordecaix.zipline.services.BaseLogger
 import org.slf4j.LoggerFactory
 
-class DesktopLogger : BaseLogger {
+class Logger : BaseLogger {
 
     private val logger = LoggerFactory.getLogger("mordecaix-logger")
 
